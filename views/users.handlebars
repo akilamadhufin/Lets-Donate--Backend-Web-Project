@@ -1,0 +1,11 @@
+<h1 class="page-title">{{{title}}}</h1>
+<div class="user-grid">
+    {{#each users}}
+    <div class="user-card">
+        <h2>{{this.firstname}} {{this.lastname}}</h2>
+        <p><strong>Email:</strong> {{this.email}}</p>
+        <p><strong>Contact Number:</strong> {{this.contactnumber}}</p>
+        <p><strong>Address:</strong> {{this.address}}</p>
+    </div>    
+    {{/each}}
+</div>    

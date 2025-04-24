@@ -2,6 +2,7 @@
   "dependencies": {
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "express-handlebars": "^8.0.2",
     "mongoose": "^8.13.2"
   },
   "devDependencies": {
@@ -11,6 +12,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "akila,gimhani,udashi",
