@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 require('dotenv').config();
+const session = require('express-session');
 
 const app = express();
 app.use(express.static('public'));
@@ -10,8 +11,14 @@ app.engine('handlebars',exphbs.engine({
 
 }));
 
-app.set('view engine', 'handlebars');
+app.use(session({
+    secret: 'your-secret-key', 
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
 
+app.set('view engine', 'handlebars');
 app.use(express.urlencoded({extended: false}));
 
 //had to change the dns server to google dns as DNA ISP is not supporting srv
@@ -74,6 +81,7 @@ app.get('/users', async (req,res) => {
 app.get('/user-registration', (req,res) => {
     res.render('user-registration');
 }); 
+
 app.post('/users', async (req,res) => {
     console.log('Info' + req.body);
     const newUser = new Users (req.body);
@@ -82,9 +90,57 @@ app.post('/users', async (req,res) => {
 });
 
 // delete and update- we have to use them in the project
-//home
 
-app.get('/', (req,res) => {
-    res.render('index');
+
+// login
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    
+    try {
+        const user = await Users.findOne({ email });
+        
+        if (user && user.password === password) {
+            req.session.user = user; 
+            res.redirect('/');
+        } else {
+            res.render('login', { 
+                error: 'Invalid credentials' 
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        res.render('login', { 
+            error: 'Something went wrong' 
+        });
+    }
 });
+
+// Render login page
+app.get('/login', (req, res) => {
+    res.render('login');
+});
+
+// logout
+app.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.redirect('/');
+        }
+        res.clearCookie('connect.sid');
+        res.redirect('/');  
+    });
+});
+//home
+app.get('/', (req, res) => {
+    if (req.session.user) {
+       
+        res.render('index', {
+            user: req.session.user, 
+        });
+    } else {
+        
+        res.render('index');
+    }
+});
+
 
