@@ -3,10 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Let's Donate</title>
     <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="/">Home</a>
+            <a href="#about-us">About Us</a>
+            <a href="#all-items">All Items</a>
+            <a href="#categories">Categories</a>
+        </div>
+        <div class="nav-right">
+            {{#if user}}
+                <a href="/profile" class="btn"><span>Hi {{user.firstname}}!</span></a>
+                <div class="dropdown">
+                    <a href="#" class="btn">My Activity <span class="dropdown-icon">▼</span></a>
+                    <div class="dropdown-content">
+                        <a href="/my-donations">My Donations</a>
+                        <a href="/messages">Messages</a>
+                        <a href="/logout">Logout</a>
+                    </div>
+                </div>
+                    <a href="/basket" class="btn"><i class="fas fa-shopping-basket"></i></a>
+            {{else}}
+                <a href="/basket" class="btn">Basket</a>
+                <a href="/login" class="btn">Sign In</a>
+            {{/if}}
+        </div>
+    </nav>
     {{{body}}}
 </body>
 </html>
