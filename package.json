@@ -6,7 +6,7 @@
     "mongoose": "^8.13.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.10"
   },
   "name": "lets-donate--backend-web-project",
   "version": "1.0.0",
