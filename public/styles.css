@@ -1,24 +1,30 @@
+/* Global Styles */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #f0f4f8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.register-container {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    width: 400px;
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
     text-align: center;
     margin-bottom: 20px;
     color: #2c3e50;
+}
+
+h2 {
+    color: #2a9d8f;
+    margin-bottom: 20px;
+}
+
+/* Registration Container */
+.reg-container {
+    max-width: 500px;
+    margin: 80px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .form-group {
@@ -61,6 +67,8 @@ input:focus {
 .submit-btn:hover {
     background-color: #2980b9;
 }
+
+/* Page Title */
 .page-title {
     text-align: center;
     font-size: 2.5rem;
@@ -68,6 +76,7 @@ input:focus {
     color: #333;
 }
 
+/* User Grid */
 .user-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -97,4 +106,199 @@ input:focus {
     margin: 6px 0;
     color: #555;
     line-height: 1.5;
+}
+
+/* Sections */
+.section {
+    padding: 40px;
+    background-color: #fff;
+    margin: 20px auto;
+    border-radius: 8px;
+    max-width: 1000px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Items Grid */
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.item-card {
+    background-color: #f1f1f1;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #2a9d8f;
+    padding: 5px 30px;
+    align-items: center;
+    min-height: 40px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+.navbar .btn {
+    background-color: #fff;
+    color: #2a9d8f;
+    padding: 6px 14px;
+    border: 2px solid #2a9d8f;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar .btn:hover {
+    background-color: #e0e0e0;
+    color: #2a9d8f;
+}
+
+/* Dropdown Menu */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown button styling (match other buttons) */
+.dropdown > a {
+    background-color: #fff;
+    color: #2a9d8f;
+    padding: 6px 14px;
+    border: 2px solid #2a9d8f;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+    display: inline-block;
+}
+
+.dropdown > a:hover {
+    background-color: #e0e0e0;
+    color: #2a9d8f;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    color: #2a9d8f;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+
+.dropdown-content a:hover {
+    background-color: #e0e0e0;
+}
+
+/* Dropdown Icon */
+.dropdown-icon {
+    margin-left: 5px;
+    font-size: 0.8em;
+    vertical-align: middle;
+}
+
+/* Style the dropdown button when hovering */
+.dropdown:hover .dropdown-icon {
+    transform: rotate(180deg);
+    transition: transform 0.3s;
+}
+
+/* Login Form */
+.login-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.login-container h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.login-container .form-group {
+    margin-bottom: 20px;
+}
+
+.login-container label {
+    font-size: 16px;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 6px;
+    outline: none;
+}
+
+.login-container input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #3498db;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+    background-color: #2980b9;
+}
+
+.register-link {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.register-btn {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.register-btn:hover {
+    text-decoration: underline;
 }
