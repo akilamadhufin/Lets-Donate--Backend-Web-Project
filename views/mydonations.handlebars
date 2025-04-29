@@ -1,0 +1,21 @@
+<h1>My Donations</h1>
+
+{{#if successMessage}}
+    <div class="popup-message">
+        <p>{{successMessage}}</p>
+    </div>
+{{/if}}
+
+<ul>
+    {{#each donations}}
+        <li>
+            <h3>{{this.title}}</h3>
+            <p>{{this.description}}</p>
+            <p>Category: {{this.category}}</p>
+            <p>Location: {{this.pickupLocation}}</p>
+            {{#if this.imagePath}}
+                <img src="{{this.imagePath}}" alt="Donation image" />
+            {{/if}}
+        </li>
+    {{/each}}
+</ul>
