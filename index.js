@@ -141,19 +141,29 @@ app.get('/user-registration', (req, res) => {
 });
 
 // POST to create new user
-app.post('/users', async (req, res) => {
-    try {
-        console.log('Info:', req.body);
+app.post('/users',
+    body('email').isEmail().withMessage('Invalid email'),
+    body('password').isLength({ min: 5 }).withMessage('Password must be at least 5 characters'),
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.render('user-registration', { errors: errors.array() });
+        }
 
-        const newUser = new Users(req.body);
-        await newUser.save();
-
-        res.redirect('/login');
-    } catch (error) {
-        console.error(error);
-        res.render('user-registration', { error: 'Registration failed' });
+        try {
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            const newUser = new Users({
+                ...req.body,
+                password: hashedPassword
+            });
+            await newUser.save();
+            res.redirect('/login');
+        } catch (error) {
+            console.error(error);
+            res.render('user-registration', { error: 'Registration failed' });
+        }
     }
-});
+);
 
 // delete and update- we have to use them in the project
 
