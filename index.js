@@ -3,8 +3,12 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const path = require('path');
 const exphbs = require('express-handlebars');
-require('dotenv').config();
 const session = require('express-session');
+require('dotenv').config();
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
+const { body, validationResult } = require('express-validator');
 
 const app = express();
 
@@ -27,6 +31,10 @@ app.use(session({
     cookie: { secure: false }
 }));
 
+// for passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // multer for save images, Images are saved in uploads folder, then the url string will be saved to mongodb
 const storage = multer.diskStorage({
@@ -37,13 +45,10 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
-
 const upload = multer({ storage: storage });
-
 
 //had to change the dns server to google dns as DNA ISP is not supporting srv
 const dbURI = 'mongodb+srv://'+process.env.DBUSERNAME+':'+process.env.DBPASSWORD+'@'+process.env.CLUSTER+'.mongodb.net/'+process.env.DB+'?retryWrites=true&w=majority&appName='+process.env.CLUSTER;
-
 console.log(dbURI);
 
 // this is promise function
@@ -58,14 +63,40 @@ mongoose.connect(dbURI)
     // if does not connect, do the below
     .catch((err)=>{
         console.log(err);
-    })
+    });
     // we need schema to make the structure of our document
 
-    //loading the schema
-    const Users = require('./models/Users');
-    const Donations = require('./models/Donations');
 
+//loading the schema
+const Users = require('./models/Users');
+const Donations = require('./models/Donations');
 
+// passport configuration
+passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
+    try {
+        const user = await Users.findOne({ email });
+        if (!user) return done(null, false, { message: 'Incorrect email.' });
+
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) return done(null, false, { message: 'Incorrect password.' });
+
+        return done(null, user);
+    } catch (err) {
+        return done(err);
+    }
+}));
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await Users.findById(id);
+        done(null, user);
+    } catch (err) {
+        done(err, null);
+    }
+});
 
 
 app.get('/api/users', async (req,res) => {
