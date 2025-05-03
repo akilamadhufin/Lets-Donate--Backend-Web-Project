@@ -296,17 +296,19 @@ app.get('/mydonations', async (req, res) => {
 
 
 
-//home
-app.get('/', (req, res) => {
-    if (req.session.user) {
-        // For logged-in users
+//home route display all items
+app.get('/', async (req, res) => {
+    try {
+        const allItems = await Donations.find();
         res.render('index', {
-            user: req.session.user,  
+            title: 'All Donated Items',
+            allItems: allItems.map(item => item.toJSON())
         });
-    } else {
-        // For logged-out users
-        res.render('index');
+    } catch (error) {
+        console.log(error);
+        res.status(500).render('error', { message: 'Failed to fetch items' });
     }
 });
+
 
 
