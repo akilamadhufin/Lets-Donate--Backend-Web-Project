@@ -302,3 +302,66 @@ input:focus {
 .register-btn:hover {
     text-decoration: underline;
 }
+
+/* Items Grid */
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.item-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.item-card:hover {
+    transform: translateY(-5px);
+}
+
+.item-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.item-details {
+    color: #333;
+}
+
+.item-details h3 {
+    font-size: 1.5rem;
+    color: #2a9d8f;
+    margin-bottom: 10px;
+}
+
+.item-details p {
+    margin: 5px 0;
+    font-size: 1rem;
+}
+
+.view-details-btn {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+}
+
+.view-details-btn:hover {
+    background-color: #2980b9;
+}
