@@ -256,7 +256,7 @@ app.post('/donate', upload.single('image'), async (req, res) => {
             description: req.body.description,
             category: req.body.category,
             pickupLocation: req.body.pickupLocation,
-            imagePath: req.file ? '/uploads/' + req.file.filename : null,
+            image: req.file ? '/uploads/' + req.file.filename : null,
             userId: req.session.user._id
         };
 
