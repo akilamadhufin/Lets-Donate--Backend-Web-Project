@@ -144,10 +144,17 @@ app.get('/user-registration', (req, res) => {
 app.post('/users',
     body('email').isEmail().withMessage('Invalid email'),
     body('password').isLength({ min: 5 }).withMessage('Password must be at least 5 characters'),
-    async (req, res) => {
+    body('firstname').notEmpty().withMessage('First name is required'),
+    body('lastname').notEmpty().withMessage('Last name is required'),
+    body('contactnumber').notEmpty().withMessage('Contact number is required'),
+    body('address').notEmpty().withMessage('Address is required'),
+    async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.render('user-registration', { errors: errors.array() });
+            return res.render('user-registration', {
+                errors: errors.array(),
+                ...req.body
+            });
         }
 
         try {
@@ -157,13 +164,30 @@ app.post('/users',
                 password: hashedPassword
             });
             await newUser.save();
-            res.redirect('/login');
+
+            // Auto-login after registration
+            req.login(newUser, (err) => {
+                if (err) {
+                    console.error('Login error:', err);
+                    return res.render('user-registration', {
+                        error: 'Login failed after registration',
+                        ...req.body
+                    });
+                }
+                req.session.user = newUser;
+                return res.redirect('/');
+            });
+
         } catch (error) {
             console.error(error);
-            res.render('user-registration', { error: 'Registration failed' });
+            res.render('user-registration', {
+                error: 'Registration failed',
+                ...req.body
+            });
         }
     }
 );
+
 
 // delete and update- we have to use them in the project
 
