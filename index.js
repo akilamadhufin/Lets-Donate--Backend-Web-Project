@@ -35,6 +35,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// keep the user session once login
+app.use((req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+});
 
 // multer for save images, Images are saved in uploads folder, then the url string will be saved to mongodb
 const storage = multer.diskStorage({
