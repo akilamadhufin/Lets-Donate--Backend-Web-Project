@@ -19,11 +19,19 @@ app.use(express.static('public'));
 
 // for handlebars
 app.engine('handlebars',exphbs.engine({
-    defaultLayout: 'main'
-
+    defaultLayout: 'main',
+    helpers: {
+        isCategorySelected: function (category, value) { // Registering helper to display the selected category in update donation form
+            return category === value;
+        }
+    }
 }));
+
 app.set('view engine', 'handlebars');
 app.use(express.urlencoded({extended: false}));
+
+// for put method
+app.use(methodOverride('_method'));
 
 // sessions for logins
 app.use(session({
@@ -32,6 +40,15 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false }
 }));
+
+// Nodemailer configuration
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
 
 // for passport
 app.use(passport.initialize());
@@ -195,10 +212,6 @@ app.post('/users',
     }
 );
 
-
-// delete and update- we have to use them in the project
-
-
 // login
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -264,6 +277,24 @@ app.post('/donate', upload.single('image'), async (req, res) => {
 
         const newDonation = new Donations(newDonationData);
         await newDonation.save();
+
+        // Email content to be shown in the email body
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: req.session.user.email,
+            subject: 'Donation Confirmation',
+            text: `Dear ${req.session.user.firstname},\n\nThank you for your donation! Here are the details of your donation:\n\nTitle: ${req.body.title}\nDescription: ${req.body.description}\nCategory: ${req.body.category}\nPickup Location: ${req.body.pickupLocation}\n\nThank you for your generosity!\n\nBest regards,\nThe Let's Donate Team`
+        };
+
+        // Send email
+        await transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+                console.error('Error sending email:', err);
+                return res.status(500).render('donate-form', { error: 'Error sending email' });
+            }
+            console.log('Email sent:', info.response);
+        });        
+
         req.session.donationSuccess = 'Donation added successfully! You can view your donations on the "My Donations" page.';
         res.redirect('/mydonations');
     } catch (error) {
