@@ -9,6 +9,8 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
+const nodemailer = require('nodemailer');
+const methodOverride = require('method-override'); // for put method
 
 const app = express();
 
@@ -17,11 +19,19 @@ app.use(express.static('public'));
 
 // for handlebars
 app.engine('handlebars',exphbs.engine({
-    defaultLayout: 'main'
-
+    defaultLayout: 'main',
+    helpers: {
+        isCategorySelected: function (category, value) { // Registering helper to display the selected category in update donation form
+            return category === value;
+        }
+    }
 }));
+
 app.set('view engine', 'handlebars');
 app.use(express.urlencoded({extended: false}));
+
+// for put method
+app.use(methodOverride('_method'));
 
 // sessions for logins
 app.use(session({
@@ -31,10 +41,24 @@ app.use(session({
     cookie: { secure: false }
 }));
 
+// Nodemailer configuration
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+
 // for passport
 app.use(passport.initialize());
 app.use(passport.session());
 
+// keep the user session once login
+app.use((req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+});
 
 // multer for save images, Images are saved in uploads folder, then the url string will be saved to mongodb
 const storage = multer.diskStorage({
@@ -188,10 +212,6 @@ app.post('/users',
     }
 );
 
-
-// delete and update- we have to use them in the project
-
-
 // login
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -199,7 +219,7 @@ app.post('/login', async (req, res) => {
     try {
         const user = await Users.findOne({ email });
         
-        if (user && user.password === password) {
+        if (user && await bcrypt.compare(password, user.password)) {
             req.session.user = user;  
             res.redirect('/');
         } else {
@@ -251,12 +271,30 @@ app.post('/donate', upload.single('image'), async (req, res) => {
             description: req.body.description,
             category: req.body.category,
             pickupLocation: req.body.pickupLocation,
-            imagePath: req.file ? '/uploads/' + req.file.filename : null,
+            image: req.file ? '/uploads/' + req.file.filename : null,
             userId: req.session.user._id
         };
 
         const newDonation = new Donations(newDonationData);
         await newDonation.save();
+
+        // Email content to be shown in the email body
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: req.session.user.email,
+            subject: 'Donation Confirmation',
+            text: `Dear ${req.session.user.firstname},\n\nThank you for your donation! Here are the details of your donation:\n\nTitle: ${req.body.title}\nDescription: ${req.body.description}\nCategory: ${req.body.category}\nPickup Location: ${req.body.pickupLocation}\n\nThank you for your generosity!\n\nBest regards,\nThe Let's Donate Team`
+        };
+
+        // Send email
+        await transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+                console.error('Error sending email:', err);
+                return res.status(500).render('donate-form', { error: 'Error sending email' });
+            }
+            console.log('Email sent:', info.response);
+        });        
+
         req.session.donationSuccess = 'Donation added successfully! You can view your donations on the "My Donations" page.';
         res.redirect('/mydonations');
     } catch (error) {
@@ -291,17 +329,19 @@ app.get('/mydonations', async (req, res) => {
 
 
 
-//home
-app.get('/', (req, res) => {
-    if (req.session.user) {
-        // For logged-in users
+//home route display all items
+app.get('/', async (req, res) => {
+    try {
+        const allItems = await Donations.find();
         res.render('index', {
-            user: req.session.user,  
+            title: 'All Donated Items',
+            allItems: allItems.map(item => item.toJSON())
         });
-    } else {
-        // For logged-out users
-        res.render('index');
+    } catch (error) {
+        console.log(error);
+        res.status(500).render('error', { message: 'Failed to fetch items' });
     }
 });
+
 
 
