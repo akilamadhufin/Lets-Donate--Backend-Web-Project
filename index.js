@@ -9,6 +9,8 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
+const nodemailer = require('nodemailer');
+const methodOverride = require('method-override'); // for put method
 
 const app = express();
 
