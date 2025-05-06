@@ -329,19 +329,30 @@ app.get('/mydonations', async (req, res) => {
 
 
 
-//home route display all items
-app.get('/', async (req, res) => {
+// update donations
+
+// Show update donation form
+app.get('/updatedonations-form/:id', async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+
     try {
-        const allItems = await Donations.find();
-        res.render('index', {
-            title: 'All Donated Items',
-            allItems: allItems.map(item => item.toJSON())
+        const donation = await Donations.findById(req.params.id);
+
+        // Optional: Check if donation belongs to the logged-in user
+        if (!donation || donation.userId.toString() !== req.session.user._id.toString()) {
+            return res.status(403).render('error', { message: 'Unauthorized' });
+        }
+
+        res.render('updatedonations-form', {
+            user: req.session.user,
+            donation: donation.toJSON()
         });
     } catch (error) {
-        console.log(error);
-        res.status(500).render('error', { message: 'Failed to fetch items' });
+        console.error(error);
+        res.status(500).render('error', { message: 'Failed to load donation' });
     }
 });
-
 
 
