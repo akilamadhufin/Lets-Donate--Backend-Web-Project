@@ -494,3 +494,63 @@ app.get('/my-account', async (req, res) => {
         res.redirect('/login');
     }
 });
+
+// update user details
+// getting user edit form
+app.get('/edituser-form/:id', async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+
+    try {
+        const user = await User.findById(req.params.id);
+
+        // Optional: Only allow editing if logged-in user is the same
+        if (!user || user._id.toString() !== req.session.user._id.toString()) {
+            return res.status(403).render('error', { message: 'Unauthorized' });
+        }
+
+        res.render('edituser-form', {
+            user: req.session.user,
+            editUser: user.toJSON()
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).render('error', { message: 'Failed to load user' });
+    }
+});
+
+// updating user data
+app.put('/edituser/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const updatedUserData = {
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            contactnumber: req.body.contactnumber,
+            address: req.body.address
+        };
+
+        // Only hash password if it's being updated
+        if (req.body.password) {
+            updatedUserData.password = await bcrypt.hash(req.body.password, 10);
+        }
+
+        const user = await User.findByIdAndUpdate(userId, updatedUserData, { new: true });
+
+        // Update the session with the new user data
+        req.session.user = user;
+        req.session.save(err => {
+            if (err) console.error('Session save error:', err);
+            res.redirect('/my-account');
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.render('edituser-form', { 
+            error: 'Update failed. Please try again.',
+            editUser: req.body // Pass back the submitted data
+        });
+    }
+});
