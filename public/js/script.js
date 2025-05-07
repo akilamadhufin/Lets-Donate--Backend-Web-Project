@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     
 
-// search bar to the index page
+// search bar to the index.hbs page
 searchInput.addEventListener('input', () => {
     const query = searchInput.value.toLowerCase();
     document.querySelectorAll('.item-card').forEach(card => {
