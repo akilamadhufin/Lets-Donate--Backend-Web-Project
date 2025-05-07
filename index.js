@@ -417,3 +417,17 @@ app.post('/deletedonation/:id/delete', async (req, res) => {
         res.status(500).render('error', { message: 'Failed to delete donation' });
     }
 });
+
+//home
+app.get('/', async (req, res) => {
+    try {
+        const allItems = await Donations.find();
+        res.render('index', {
+            title: 'All Donated Items',
+            allItems: allItems.map(item => item.toJSON())
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).render('error', { message: 'Failed to fetch items' });
+    }
+});
