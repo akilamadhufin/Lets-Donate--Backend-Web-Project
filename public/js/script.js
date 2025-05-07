@@ -97,5 +97,16 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     
 
+// search bar to the index page
+searchInput.addEventListener('input', () => {
+    const query = searchInput.value.toLowerCase();
+    document.querySelectorAll('.item-card').forEach(card => {
+      const title = card.dataset.title.toLowerCase();
+      const category = card.dataset.category.toLowerCase();
+      const pickup = card.dataset.pickup.toLowerCase();
+  
+      const matches = title.includes(query) || category.includes(query) || pickup.includes(query);
+      card.style.display = matches ? 'block' : 'none';
     });
-});
+  });
+  });
