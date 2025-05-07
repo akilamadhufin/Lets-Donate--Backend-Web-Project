@@ -1,0 +1,32 @@
+<div class="account-wrapper">
+    <h1 class="page-title">My Account</h1>
+
+    <div class="account-card">
+        <div class="account-info">
+            <div class="info-row">
+                <label>First Name:</label>
+                <span>{{user.firstname}}</span>
+            </div>
+            <div class="info-row">
+                <label>Last Name:</label>
+                <span>{{user.lastname}}</span>
+            </div>
+            <div class="info-row">
+                <label>Email:</label>
+                <span>{{user.email}}</span>
+            </div>
+            <div class="info-row">
+                <label>Contact Number:</label>
+                <span>{{user.contactnumber}}</span>
+            </div>
+            <div class="info-row">
+                <label>Address:</label>
+                <span>{{user.address}}</span>
+            </div>
+        </div>
+
+        <div class="account-actions">
+            <a href="/edituser-form/{{user._id}}" class="btn edit-btn">Edit Account</a>
+        </div>
+    </div>
+</div>
