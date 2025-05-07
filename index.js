@@ -71,7 +71,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-//had to change the dns server to google dns as DNA ISP is not supporting srv
+
 const dbURI = 'mongodb+srv://'+process.env.DBUSERNAME+':'+process.env.DBPASSWORD+'@'+process.env.CLUSTER+'.mongodb.net/'+process.env.DB+'?retryWrites=true&w=majority&appName='+process.env.CLUSTER;
 console.log(dbURI);
 
@@ -93,12 +93,12 @@ mongoose.connect(dbURI)
 
 //loading the schema
 const Users = require('./models/Users');
-const Donations = require('./models/Donations');
+const Donation = require('./models/Donations');
 
 // passport configuration
 passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
     try {
-        const user = await Users.findOne({ email });
+        const user = await User.findOne({ email });
         if (!user) return done(null, false, { message: 'Incorrect email.' });
 
         const match = await bcrypt.compare(password, user.password);
@@ -115,7 +115,7 @@ passport.serializeUser((user, done) => {
 });
 passport.deserializeUser(async (id, done) => {
     try {
-        const user = await Users.findById(id);
+        const user = await User.findById(id);
         done(null, user);
     } catch (err) {
         done(err, null);
@@ -125,7 +125,7 @@ passport.deserializeUser(async (id, done) => {
 
 app.get('/api/users', async (req,res) => {
     try{
-        const result = await Users.find();
+        const result = await User.find();
         res.json(result);
     }
     catch (error){
@@ -135,13 +135,13 @@ app.get('/api/users', async (req,res) => {
 
 app.get('/api/users/:id', async(req,res) =>{
     const id = req.params.id;
-    const users = await Users.findById(id);
+    const users = await User.findById(id);
     res.json(users);
 })
 
 app.get('/users', async (req,res) => {
     try{
-        const users = await Users.find();
+        const users = await User.find();
         //res.json(result);
         res.render('users',
             {
@@ -217,7 +217,7 @@ app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     
     try {
-        const user = await Users.findOne({ email });
+        const user = await User.findOne({ email });
         
         if (user && await bcrypt.compare(password, user.password)) {
             req.session.user = user;  
@@ -275,7 +275,7 @@ app.post('/donate', upload.single('image'), async (req, res) => {
             userId: req.session.user._id
         };
 
-        const newDonation = new Donations(newDonationData);
+        const newDonation = new Donation(newDonationData);
         await newDonation.save();
 
         // Email content to be shown in the email body
@@ -308,7 +308,7 @@ app.post('/donate', upload.single('image'), async (req, res) => {
 app.get('/mydonations', async (req, res) => {
     if (req.session.user) {
         try {
-            const donations = await Donations.find({ userId: req.session.user._id }).lean();
+            const donations = await Donation.find({ userId: req.session.user._id }).lean();
 
             const successMessage = req.session.donationSuccess || null;
             delete req.session.donationSuccess;
@@ -338,7 +338,7 @@ app.get('/updatedonations-form/:id', async (req, res) => {
     }
 
     try {
-        const donation = await Donations.findById(req.params.id);
+        const donation = await Donation.findById(req.params.id);
 
         // Optional: Check if donation belongs to the logged-in user
         if (!donation || donation.userId.toString() !== req.session.user._id.toString()) {
@@ -369,7 +369,7 @@ app.put('/updatedonations/:id', upload.single('image'), async (req, res) => {
         };
 
         // Find and update the donation document
-        const donation = await Donations.findById(donationId);
+        const donation = await Donation.findById(donationId);
 
         // Optional: Check if donation belongs to the logged-in user
         if (!donation || donation.userId.toString() !== req.session.user._id.toString()) {
@@ -377,7 +377,7 @@ app.put('/updatedonations/:id', upload.single('image'), async (req, res) => {
         }
 
         // Update donation
-        await Donations.findByIdAndUpdate(donationId, updatedData);
+        await Donation.findByIdAndUpdate(donationId, updatedData);
 
         // Set success message
         req.session.updateSuccess = 'Donation updated successfully!';
@@ -399,7 +399,7 @@ app.post('/deletedonation/:id/delete', async (req, res) => {
     }
 
     try {
-        const donation = await Donations.findById(donationId);
+        const donation = await Donation.findById(donationId);
 
         // Check if the donation exists and if it belongs to the logged-in user
         if (!donation || donation.userId.toString() !== req.session.user._id.toString()) {
@@ -407,7 +407,7 @@ app.post('/deletedonation/:id/delete', async (req, res) => {
         }
 
         // Delete the donation
-        await Donations.findByIdAndDelete(donationId);
+        await Donation.findByIdAndDelete(donationId);
 
         // Set success message
         req.session.deleteSuccess = 'Donation deleted successfully!';
@@ -421,7 +421,7 @@ app.post('/deletedonation/:id/delete', async (req, res) => {
 //home
 app.get('/', async (req, res) => {
     try {
-        const allItems = await Donations.find();
+        const allItems = await Donation.find();
         res.render('index', {
             title: 'All Donated Items',
             allItems: allItems.map(item => item.toJSON())
