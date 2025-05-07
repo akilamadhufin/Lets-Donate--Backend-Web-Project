@@ -356,3 +356,35 @@ app.get('/updatedonations-form/:id', async (req, res) => {
 });
 
 
+// Handle donation update submission
+app.put('/updatedonations/:id', upload.single('image'), async (req, res) => {
+    try {
+        const donationId = req.params.id;
+        const updatedData = {
+            title: req.body.title,
+            description: req.body.description,
+            category: req.body.category,
+            pickupLocation: req.body.pickupLocation,
+            image: req.file ? '/uploads/' + req.file.filename : req.body.existingImage, // Keep existing image if not updated
+        };
+
+        // Find and update the donation document
+        const donation = await Donations.findById(donationId);
+
+        // Optional: Check if donation belongs to the logged-in user
+        if (!donation || donation.userId.toString() !== req.session.user._id.toString()) {
+            return res.status(403).render('error', { message: 'Unauthorized' });
+        }
+
+        // Update donation
+        await Donations.findByIdAndUpdate(donationId, updatedData);
+
+        // Set success message
+        req.session.updateSuccess = 'Donation updated successfully!';
+        
+        res.redirect('/mydonations');
+    } catch (error) {
+        console.error(error);
+        res.render('updatedonations-form', { error: 'Something went wrong while updating your donation' });
+    }
+});
