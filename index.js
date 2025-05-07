@@ -388,3 +388,46 @@ app.put('/updatedonations/:id', upload.single('image'), async (req, res) => {
         res.render('updatedonations-form', { error: 'Something went wrong while updating your donation' });
     }
 });
+
+// deleting donations
+
+app.post('/deletedonation/:id/delete', async (req, res) => {
+    const donationId = req.params.id;
+
+    if (!req.session.user) {
+        return res.redirect('/login');  // Redirect if user is not logged in
+    }
+
+    try {
+        const donation = await Donations.findById(donationId);
+
+        // Check if the donation exists and if it belongs to the logged-in user
+        if (!donation || donation.userId.toString() !== req.session.user._id.toString()) {
+            return res.status(403).render('error', { message: 'Unauthorized' });
+        }
+
+        // Delete the donation
+        await Donations.findByIdAndDelete(donationId);
+
+        // Set success message
+        req.session.deleteSuccess = 'Donation deleted successfully!';
+        res.redirect('/mydonations');  // Redirect to "My Donations" page
+    } catch (error) {
+        console.error(error);
+        res.status(500).render('error', { message: 'Failed to delete donation' });
+    }
+});
+
+//home
+app.get('/', async (req, res) => {
+    try {
+        const allItems = await Donations.find();
+        res.render('index', {
+            title: 'All Donated Items',
+            allItems: allItems.map(item => item.toJSON())
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).render('error', { message: 'Failed to fetch items' });
+    }
+});
