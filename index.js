@@ -470,3 +470,27 @@ app.get('/', async (req, res) => {
         res.status(500).render('error', { message: 'Failed to fetch items' });
     }
 });
+
+// display user details
+
+// displaying user details in myaccount page
+app.get('/my-account', async (req, res) => {
+    if (req.session.user) {
+        try {
+            const user = await User.findById(req.session.user._id).lean();
+
+            if (!user) {
+                return res.status(404).render('error', { message: 'User not found' });
+            }
+
+            res.render('my-account', {
+                user: user
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).render('error', { message: 'Failed to load account details' });
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
