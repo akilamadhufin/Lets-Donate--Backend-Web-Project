@@ -9,9 +9,6 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
-const adminRoutes = require('./routes/admin/auth');
-
-
 
 
 const app = express();
@@ -40,11 +37,19 @@ app.use(express.static('public'));
 
 // for handlebars
 app.engine('handlebars',exphbs.engine({
-    defaultLayout: 'main'
-
+    defaultLayout: 'main',
+    helpers: {
+        isCategorySelected: function (category, value) { // Registering helper to display the selected category in update donation form
+            return category === value;
+        }
+    }
 }));
+
 app.set('view engine', 'handlebars');
 app.use(express.urlencoded({extended: false}));
+
+// for put method
+app.use(methodOverride('_method'));
 
 // sessions for logins
 app.use(session({
@@ -54,10 +59,24 @@ app.use(session({
     cookie: { secure: false }
 }));
 
+// Nodemailer configuration
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+
 // for passport
 app.use(passport.initialize());
 app.use(passport.session());
 
+// keep the user session once login
+app.use((req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+});
 
 // multer for save images, Images are saved in uploads folder, then the url string will be saved to mongodb
 const storage = multer.diskStorage({
@@ -70,7 +89,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-//had to change the dns server to google dns as DNA ISP is not supporting srv
+
 const dbURI = 'mongodb+srv://'+process.env.DBUSERNAME+':'+process.env.DBPASSWORD+'@'+process.env.CLUSTER+'.mongodb.net/'+process.env.DB+'?retryWrites=true&w=majority&appName='+process.env.CLUSTER;
 console.log(dbURI);
 
@@ -90,14 +109,11 @@ mongoose.connect(dbURI)
     // we need schema to make the structure of our document
 
 
-//loading the schema
-const Users = require('./models/users');
-const Donations = require('./models/Donations');
 
 // passport configuration
 passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
     try {
-        const user = await Users.findOne({ email });
+        const user = await User.findOne({ email });
         if (!user) return done(null, false, { message: 'Incorrect email.' });
 
         const match = await bcrypt.compare(password, user.password);
@@ -114,7 +130,7 @@ passport.serializeUser((user, done) => {
 });
 passport.deserializeUser(async (id, done) => {
     try {
-        const user = await Users.findById(id);
+        const user = await User.findById(id);
         done(null, user);
     } catch (err) {
         done(err, null);
@@ -124,7 +140,7 @@ passport.deserializeUser(async (id, done) => {
 
 app.get('/api/users', async (req,res) => {
     try{
-        const result = await Users.find();
+        const result = await User.find();
         res.json(result);
     }
     catch (error){
@@ -134,13 +150,13 @@ app.get('/api/users', async (req,res) => {
 
 app.get('/api/users/:id', async(req,res) =>{
     const id = req.params.id;
-    const users = await Users.findById(id);
+    const users = await User.findById(id);
     res.json(users);
 })
 
 app.get('/users', async (req,res) => {
     try{
-        const users = await Users.find();
+        const users = await User.find();
         //res.json(result);
         res.render('users',
             {
@@ -211,18 +227,14 @@ app.post('/users',
     }
 );
 
-
-// delete and update- we have to use them in the project
-
-
 // login
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     
     try {
-        const user = await Users.findOne({ email });
+        const user = await User.findOne({ email });
         
-        if (user && user.password === password) {
+        if (user && await bcrypt.compare(password, user.password)) {
             req.session.user = user;  
             res.redirect('/');
         } else {
@@ -274,12 +286,30 @@ app.post('/donate', upload.single('image'), async (req, res) => {
             description: req.body.description,
             category: req.body.category,
             pickupLocation: req.body.pickupLocation,
-            imagePath: req.file ? '/uploads/' + req.file.filename : null,
+            image: req.file ? '/uploads/' + req.file.filename : null,
             userId: req.session.user._id
         };
 
-        const newDonation = new Donations(newDonationData);
+        const newDonation = new Donation(newDonationData);
         await newDonation.save();
+
+        // Email content to be shown in the email body
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: req.session.user.email,
+            subject: 'Donation Confirmation',
+            text: `Dear ${req.session.user.firstname},\n\nThank you for your donation! Here are the details of your donation:\n\nTitle: ${req.body.title}\nDescription: ${req.body.description}\nCategory: ${req.body.category}\nPickup Location: ${req.body.pickupLocation}\n\nThank you for your generosity!\n\nBest regards,\nThe Let's Donate Team`
+        };
+
+        // Send email
+        await transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+                console.error('Error sending email:', err);
+                return res.status(500).render('donate-form', { error: 'Error sending email' });
+            }
+            console.log('Email sent:', info.response);
+        });        
+
         req.session.donationSuccess = 'Donation added successfully! You can view your donations on the "My Donations" page.';
         res.redirect('/mydonations');
     } catch (error) {
@@ -293,7 +323,7 @@ app.post('/donate', upload.single('image'), async (req, res) => {
 app.get('/mydonations', async (req, res) => {
     if (req.session.user) {
         try {
-            const donations = await Donations.find({ userId: req.session.user._id }).lean();
+            const donations = await Donation.find({ userId: req.session.user._id }).lean();
 
             const successMessage = req.session.donationSuccess || null;
             delete req.session.donationSuccess;
@@ -314,17 +344,105 @@ app.get('/mydonations', async (req, res) => {
 
 
 
-//home
-app.get('/', (req, res) => {
-    if (req.session.user) {
-        // For logged-in users
-        res.render('index', {
-            user: req.session.user,  
+// update donations
+
+// Show update donation form
+app.get('/updatedonations-form/:id', async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+
+    try {
+        const donation = await Donation.findById(req.params.id);
+
+        // Optional: Check if donation belongs to the logged-in user
+        if (!donation || donation.userId.toString() !== req.session.user._id.toString()) {
+            return res.status(403).render('error', { message: 'Unauthorized' });
+        }
+
+        res.render('updatedonations-form', {
+            user: req.session.user,
+            donation: donation.toJSON()
         });
-    } else {
-        // For logged-out users
-        res.render('index');
+    } catch (error) {
+        console.error(error);
+        res.status(500).render('error', { message: 'Failed to load donation' });
     }
 });
 
 
+// Handle donation update submission
+app.put('/updatedonations/:id', upload.single('image'), async (req, res) => {
+    try {
+        const donationId = req.params.id;
+        const updatedData = {
+            title: req.body.title,
+            description: req.body.description,
+            category: req.body.category,
+            pickupLocation: req.body.pickupLocation,
+            image: req.file ? '/uploads/' + req.file.filename : req.body.existingImage, // Keep existing image if not updated
+        };
+
+        // Find and update the donation document
+        const donation = await Donation.findById(donationId);
+
+        // Optional: Check if donation belongs to the logged-in user
+        if (!donation || donation.userId.toString() !== req.session.user._id.toString()) {
+            return res.status(403).render('error', { message: 'Unauthorized' });
+        }
+
+        // Update donation
+        await Donation.findByIdAndUpdate(donationId, updatedData);
+
+        // Set success message
+        req.session.updateSuccess = 'Donation updated successfully!';
+        
+        res.redirect('/mydonations');
+    } catch (error) {
+        console.error(error);
+        res.render('updatedonations-form', { error: 'Something went wrong while updating your donation' });
+    }
+});
+
+// deleting donations
+
+app.post('/deletedonation/:id/delete', async (req, res) => {
+    const donationId = req.params.id;
+
+    if (!req.session.user) {
+        return res.redirect('/login');  // Redirect if user is not logged in
+    }
+
+    try {
+        const donation = await Donation.findById(donationId);
+
+        // Check if the donation exists and if it belongs to the logged-in user
+        if (!donation || donation.userId.toString() !== req.session.user._id.toString()) {
+            return res.status(403).render('error', { message: 'Unauthorized' });
+        }
+
+        // Delete the donation
+        await Donation.findByIdAndDelete(donationId);
+
+        // Set success message
+        req.session.deleteSuccess = 'Donation deleted successfully!';
+        res.redirect('/mydonations');  // Redirect to "My Donations" page
+    } catch (error) {
+        console.error(error);
+        res.status(500).render('error', { message: 'Failed to delete donation' });
+    }
+});
+
+//home
+app.get('/', async (req, res) => {
+    try {
+        const allItems = await Donation.find();
+        res.render('index', {
+            title: 'All Donated Items',
+            allItems: allItems.map(item => item.toJSON())
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).render('error', { message: 'Failed to fetch items' });
+    }
+});
