@@ -9,8 +9,15 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
+const adminRoutes = require('./routes/admin/auth');
+
+
+
 
 const app = express();
+
+app.use(express.json());
+app.use('/Admin', require('./routes/admin/auth'));
 
 // for external files like, css
 app.use(express.static('public'));
@@ -68,7 +75,7 @@ mongoose.connect(dbURI)
 
 
 //loading the schema
-const Users = require('./models/Users');
+const Users = require('./models/users');
 const Donations = require('./models/Donations');
 
 // passport configuration
