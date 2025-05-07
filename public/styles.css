@@ -170,7 +170,7 @@ input:focus {
     display: inline-block;
 }
 
-/* Dropdown button styling (match other buttons) */
+/* Dropdown button styling */
 .dropdown > a {
     background-color: #fff;
     color: #2a9d8f;
