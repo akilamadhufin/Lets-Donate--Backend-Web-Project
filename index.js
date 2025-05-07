@@ -10,6 +10,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
 <<<<<<< HEAD
+<<<<<<< HEAD
 const adminRoutes = require('./routes/admin/auth');
 
 
@@ -19,6 +20,10 @@ const nodemailer = require('nodemailer');
 const methodOverride = require('method-override'); // for put method
 >>>>>>> 5d126a190abaf5ae6989ad45cf398809428ce038
 
+=======
+
+
+>>>>>>> 799e9e4f180d08346e3d7c3be87699402ef06643
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -117,6 +122,7 @@ mongoose.connect(dbURI)
     // we need schema to make the structure of our document
 
 
+<<<<<<< HEAD
 //loading the schema
 <<<<<<< HEAD
 const Users = require('./models/users');
@@ -125,6 +131,8 @@ const Donations = require('./models/Donations');
 const Users = require('./models/Users');
 const Donation = require('./models/Donations');
 >>>>>>> 5d126a190abaf5ae6989ad45cf398809428ce038
+=======
+>>>>>>> 799e9e4f180d08346e3d7c3be87699402ef06643
 
 // passport configuration
 passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {

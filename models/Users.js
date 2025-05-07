@@ -45,9 +45,12 @@ const userSchema = new mongoose.Schema({
 });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 module.exports = mongoose.model("Users",userSchema)
 
   
 =======
 module.exports = mongoose.model("User",userSchema)
 >>>>>>> 5d126a190abaf5ae6989ad45cf398809428ce038
+=======
+>>>>>>> 799e9e4f180d08346e3d7c3be87699402ef06643
