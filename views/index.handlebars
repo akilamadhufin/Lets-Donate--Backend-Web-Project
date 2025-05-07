@@ -39,7 +39,36 @@
             {{/each}}
         </div>
 
-        
+        <!-- Modal -->
+        <div id="item-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <div class="modal-body">
+                    <img id="modal-image" />
+                    <div class="modal-info">
+                        <h3 id="modal-title"></h3>
+                        <p id="modal-description"></p>
+                        <p><strong>Category:</strong> <span id="modal-category"></span></p>
+                        <p><strong>Address:</strong> <span id="modal-address"></span></p>
+                        <div id="map"></div>
+                        <p><strong>Published:</strong> <span id="modal-date"></span></p>
+                        <p><strong>Available:</strong> <span id="modal-available"></span></p>
+                        <textarea id="message-box" placeholder="Write a message to the donor..."></textarea>
+                        <button id="send-message-btn">Send Message</button>
+
+                        <!-- Book Item Button in Modal -->
+                        {{#if this.available}}
+                        <form action="/book/{{this._id}}" method="POST">
+                            <button id="book-item-btn" type="submit">Book Item</button>
+                        </form>
+                        {{else}}
+                        <button id="book-item-btn" type="button" disabled>Item Unavailable</button>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
         </section>
 
     </main>
