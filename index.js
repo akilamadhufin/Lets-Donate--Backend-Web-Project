@@ -16,9 +16,25 @@ const adminRoutes = require('./routes/admin/auth');
 
 const app = express();
 
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use('/Admin', require('./routes/admin/auth'));
 
+app.use(session({
+  secret: 'your-secret',
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+const adminAuthRoutes = require('./routes/admin/auth');
+app.use('/admin', adminAuthRoutes);
+
+app.get('/admin/dashboard', (req, res) => {
+    if (!req.session.admin) return res.redirect('/admin/login');
+    res.send('Welcome to the admin dashboard!');
+  });
 // for external files like, css
 app.use(express.static('public'));
 
