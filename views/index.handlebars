@@ -1,63 +1,74 @@
  <main>
         {{{body}}}
-
-        <section id="about-us" class="section">
-            <h2>About Us</h2>
-            <p>
-                Welcome to <strong>Let's Donate</strong> – a community-driven platform built to help people give and receive essential items.
-                Whether it's food, clothes, books, or daily essentials, your donations make a difference.
-                Our mission is to make giving easier, faster, and more impactful. Thank you for being part of the change.
-            </p>
-        </section>
-
         <section id="all-items" class="section">
             <h2>All Donated Items</h2>
-            <div class="items-grid">
-                {{#each allItems}}
-                    <div class="item-card">
-                        <h3>{{this.title}}</h3>
-                        <p>Category: {{this.category}}</p>
-                        <p>Description: {{this.description}}</p>
-                        <p>Donated by: {{this.donatedBy}}</p>
-                    </div>
-                {{/each}}
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search by title, category, or location">
+            <span class="search-icon">&#128269;</span>
+        </div>
+
+        <div class="items-grid">
+            {{#each allItems}}
+            <div class="item-card"
+                data-id="{{this._id}}"
+                data-title="{{this.title}}"
+                data-description="{{this.description}}"
+                data-category="{{this.category}}"
+                data-pickup="{{this.pickupLocation}}"
+                data-date="{{this.publishedDate}}"
+                data-image="{{this.image}}"
+                data-user="{{this.userEmail}}"
+                data-available="{{this.available}}">
+
+                {{#if this.image}}
+                <img src="http://localhost:3000/{{this.image}}" alt="{{this.title}}" class="item-image">
+                {{/if}}
+                <h3>{{this.title}}</h3>
+                <p><strong>Pickup:</strong> {{this.pickupLocation}}</p>
+                <p><strong>Available:</strong> {{#if this.available}}Yes{{else}}No{{/if}}</p>
+
+                <!-- Book Item Button with Link to Booking Route -->
+                {{#if this.available}}
+                    <form action="/book/{{this._id}}" method="POST">
+                        <button type="submit" class="book-btn-card">Book Item</button>
+                    </form>
+                {{else}}
+                    <button class="book-btn-card" type="button" disabled>Book Item</button>
+                {{/if}}
             </div>
-        </section>
+            {{/each}}
+        </div>
 
-        <section id="categories" class="section">
-            <h2>Items by Category</h2>
+        <!-- Modal -->
+        <div id="item-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <div class="modal-body">
+                    <img id="modal-image" />
+                    <div class="modal-info">
+                        <h3 id="modal-title"></h3>
+                        <p id="modal-description"></p>
+                        <p><strong>Category:</strong> <span id="modal-category"></span></p>
+                        <p><strong>Address:</strong> <span id="modal-address"></span></p>
+                        <div id="map"></div>
+                        <p><strong>Published:</strong> <span id="modal-date"></span></p>
+                        <p><strong>Available:</strong> <span id="modal-available"></span></p>
+                        <textarea id="message-box" placeholder="Write a message to the donor..."></textarea>
+                        <button id="send-message-btn">Send Message</button>
 
-            <h3>Food</h3>
-            <div class="items-grid">
-                {{#each foodItems}}
-                    <div class="item-card">
-                        <h4>{{this.title}}</h4>
-                        <p>{{this.description}}</p>
+                        <!-- Book Item Button in Modal -->
+                        {{#if this.available}}
+                        <form action="/book/{{this._id}}" method="POST">
+                            <button id="book-item-btn" type="submit">Book Item</button>
+                        </form>
+                        {{else}}
+                        <button id="book-item-btn" type="button" disabled>Item Unavailable</button>
+                        {{/if}}
                     </div>
-                {{/each}}
+                </div>
             </div>
+        </div>
 
-            <h3>Clothes</h3>
-            <div class="items-grid">
-                {{#each clothesItems}}
-                    <div class="item-card">
-                        <h4>{{this.title}}</h4>
-                        <p>{{this.description}}</p>
-                    </div>
-                {{/each}}
-            </div>
-
-            <h3>Books</h3>
-            <div class="items-grid">
-                {{#each bookItems}}
-                    <div class="item-card">
-                        <h4>{{this.title}}</h4>
-                        <p>{{this.description}}</p>
-                    </div>
-                {{/each}}
-            </div>
-
-        
         </section>
 
     </main>

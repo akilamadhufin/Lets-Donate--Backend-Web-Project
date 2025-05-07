@@ -18,11 +18,12 @@
         </div>
         <div class="nav-right">
             {{#if user}}
-                <a href="/profile" class="btn"><span>Hi {{user.firstname}}!</span></a>
+                <a href="#" class="btn"><span>Hi {{user.firstname}}!</span></a>
                 <div class="dropdown">
                     <a href="#" class="btn">My Activity <span class="dropdown-icon">▼</span></a>
                     <div class="dropdown-content">
                         <a href="/mydonations">My Donations</a>
+                        <a href="/mycart">My Bucket</a>
                         <a href="/messages">Messages</a>
                         <a href="/logout">Logout</a>
                     </div>
@@ -35,5 +36,12 @@
         </div>
     </nav>
     {{{body}}}
+
+            <!-- Footer Section -->
+<footer class="footer">
+    <div class="footer-content">
+        <p>&copy; 2025 HAMK-CA-group 18. All rights reserved.</p>
+    </div>
+</footer>
 </body>
 </html>
