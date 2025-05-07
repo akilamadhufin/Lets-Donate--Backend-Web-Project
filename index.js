@@ -9,11 +9,29 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
-const nodemailer = require('nodemailer');
-const methodOverride = require('method-override'); // for put method
+
 
 const app = express();
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+app.use(session({
+  secret: 'your-secret',
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+const adminAuthRoutes = require('./routes/admin/auth');
+app.use('/admin', adminAuthRoutes);
+
+app.get('/admin/dashboard', (req, res) => {
+    if (!req.session.admin) return res.redirect('/admin/login');
+    res.send('Welcome to the admin dashboard!');
+  });
 // for external files like, css
 app.use(express.static('public'));
 
@@ -91,9 +109,6 @@ mongoose.connect(dbURI)
     // we need schema to make the structure of our document
 
 
-//loading the schema
-const Users = require('./models/Users');
-const Donation = require('./models/Donations');
 
 // passport configuration
 passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
