@@ -9,8 +9,21 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
+<<<<<<< HEAD
+<<<<<<< HEAD
+const adminRoutes = require('./routes/admin/auth');
 
 
+
+=======
+const nodemailer = require('nodemailer');
+const methodOverride = require('method-override'); // for put method
+>>>>>>> 5d126a190abaf5ae6989ad45cf398809428ce038
+
+=======
+
+
+>>>>>>> 799e9e4f180d08346e3d7c3be87699402ef06643
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -109,6 +122,17 @@ mongoose.connect(dbURI)
     // we need schema to make the structure of our document
 
 
+<<<<<<< HEAD
+//loading the schema
+<<<<<<< HEAD
+const Users = require('./models/users');
+const Donations = require('./models/Donations');
+=======
+const Users = require('./models/Users');
+const Donation = require('./models/Donations');
+>>>>>>> 5d126a190abaf5ae6989ad45cf398809428ce038
+=======
+>>>>>>> 799e9e4f180d08346e3d7c3be87699402ef06643
 
 // passport configuration
 passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
@@ -444,5 +468,89 @@ app.get('/', async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).render('error', { message: 'Failed to fetch items' });
+    }
+});
+
+// display user details
+
+// displaying user details in myaccount page
+app.get('/my-account', async (req, res) => {
+    if (req.session.user) {
+        try {
+            const user = await User.findById(req.session.user._id).lean();
+
+            if (!user) {
+                return res.status(404).render('error', { message: 'User not found' });
+            }
+
+            res.render('my-account', {
+                user: user
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).render('error', { message: 'Failed to load account details' });
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
+// update user details
+// getting user edit form
+app.get('/edituser-form/:id', async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+
+    try {
+        const user = await User.findById(req.params.id);
+
+        // Optional: Only allow editing if logged-in user is the same
+        if (!user || user._id.toString() !== req.session.user._id.toString()) {
+            return res.status(403).render('error', { message: 'Unauthorized' });
+        }
+
+        res.render('edituser-form', {
+            user: req.session.user,
+            editUser: user.toJSON()
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).render('error', { message: 'Failed to load user' });
+    }
+});
+
+// updating user data
+app.put('/edituser/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const updatedUserData = {
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            contactnumber: req.body.contactnumber,
+            address: req.body.address
+        };
+
+        // Only hash password if it's being updated
+        if (req.body.password) {
+            updatedUserData.password = await bcrypt.hash(req.body.password, 10);
+        }
+
+        const user = await User.findByIdAndUpdate(userId, updatedUserData, { new: true });
+
+        // Update the session with the new user data
+        req.session.user = user;
+        req.session.save(err => {
+            if (err) console.error('Session save error:', err);
+            res.redirect('/my-account');
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.render('edituser-form', { 
+            error: 'Update failed. Please try again.',
+            editUser: req.body // Pass back the submitted data
+        });
     }
 });
