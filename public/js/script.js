@@ -22,7 +22,18 @@ document.addEventListener('DOMContentLoaded', () => {
       return date.toLocaleDateString('en-US', options).replace(',', '');
     }
 
+  // to open each modal when click on each item card
+  document.querySelector('.items-grid').addEventListener('click', (e) => {
+    const card = e.target.closest('.item-card');
+    if (!card) return;
+
+    // Reseting the modal state
+    if (map) {
+      map.remove();
+      map = null;
+    }
+    mapElement.innerHTML = '';
+    messageBox.value = '';
 
 
-    
 });
