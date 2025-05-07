@@ -22,3 +22,35 @@
                 <option value="Others" {{#if (isCategorySelected donation.category "Others")}}selected{{/if}}>Others</option>
             </select>
         </div>
+
+       <div class="form-group">
+            <label for="pickupLocation">Pickup Location</label>
+            <input type="text" id="pickupLocation" name="pickupLocation" value="{{donation.pickupLocation}}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Item Available</label><br>
+            <label>
+                <input type="radio" name="available" value="true" {{#if donation.available}}checked{{/if}}> Yes
+            </label>
+            <label>
+                <input type="radio" name="available" value="false" {{#unless donation.available}}checked{{/unless}}> No
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="image">Upload New Image (Optional)</label>
+            <input type="file" id="image" name="image" accept="image/*">
+        </div>
+
+        {{#if donation.image}}
+        <div class="form-group">
+            <label>Current Image:</label>
+            <img src="{{donation.image}}" alt="Current Donation Image" width="150">
+        </div>
+        {{/if}}
+
+        <button type="submit" class="submit-btn">Update Donation</button>
+    </form>
+</div>
+  
