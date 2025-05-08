@@ -5,6 +5,7 @@ const path = require('path');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 require('dotenv').config();
+const nodemailer = require('nodemailer');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
@@ -97,14 +98,14 @@ mongoose.connect(dbURI)
 
 //loading the schema
 
-const Users = require('./models/Users');
-const Donations = require('./models/Donations');
+const User = require('./models/Users');
+const Donation = require('./models/Donations');
 const Cart = require('./models/Cart');
 
 // passport configuration
 passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
     try {
-        const user = await Users.findOne({ email });
+        const user = await User.findOne({ email });
         if (!user) return done(null, false, { message: 'Incorrect email.' });
 
         const match = await bcrypt.compare(password, user.password);
@@ -121,7 +122,7 @@ passport.serializeUser((user, done) => {
 });
 passport.deserializeUser(async (id, done) => {
     try {
-        const user = await Users.findById(id);
+        const user = await User.findById(id);
         done(null, user);
     } catch (err) {
         done(err, null);
@@ -131,7 +132,7 @@ passport.deserializeUser(async (id, done) => {
 
 app.get('/api/users', async (req,res) => {
     try{
-        const result = await Users.find();
+        const result = await User.find();
         res.json(result);
     }
     catch (error){
@@ -141,13 +142,13 @@ app.get('/api/users', async (req,res) => {
 
 app.get('/api/users/:id', async(req,res) =>{
     const id = req.params.id;
-    const users = await Users.findById(id);
+    const users = await User.findById(id);
     res.json(users);
 })
 
 app.get('/users', async (req,res) => {
     try{
-        const users = await Users.find();
+        const users = await User.find();
         //res.json(result);
         res.render('users',
             {
@@ -189,7 +190,7 @@ app.post('/users',
 
         try {
             const hashedPassword = await bcrypt.hash(req.body.password, 10);
-            const newUser = new Users({
+            const newUser = new User({
                 ...req.body,
                 password: hashedPassword
             });
@@ -224,7 +225,7 @@ app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     
     try {
-        const user = await Users.findOne({ email });
+        const user = await User.findOne({ email });
         
         if (user && await bcrypt.compare(password, user.password)) {
             req.session.user = user;
@@ -281,7 +282,7 @@ app.post('/donate', upload.single('image'), async (req, res) => {
             userId: req.session.user._id
         };
 
-        const newDonation = new Donations(newDonationData);
+        const newDonation = new Donation(newDonationData);
         await newDonation.save();
 
         // email content 
@@ -312,7 +313,7 @@ app.post('/donate', upload.single('image'), async (req, res) => {
 app.get('/mydonations', async (req, res) => {
     if (req.session.user) {
         try {
-            const donations = await Donations.find({ userId: req.session.user._id }).lean();
+            const donations = await Donation.find({ userId: req.session.user._id }).lean();
 
             const successMessage = req.session.donationSuccess || null;
             delete req.session.donationSuccess;

@@ -47,14 +47,4 @@ const userSchema = new mongoose.Schema({
 
         
 });
-
-// <<<<<<< Gimhani-Kaushalya
-// module.exports = mongoose.model("Users",userSchema)
-
-  
-// =======
-
-// module.exports = mongoose.model("Users",userSchema)
-
-// module.exports = mongoose.model("User",userSchema)
-// >>>>>>> main
+module.exports = mongoose.model("User",userSchema)
