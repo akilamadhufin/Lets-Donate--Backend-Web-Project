@@ -9,15 +9,33 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
-const adminRoutes = require('./routes/admin/auth');
-// <<<<<<< Gimhani-Kaushalya
+const methodOverride = require('method-override'); // for put method
 
-// =======
-// const nodemailer = require('nodemailer');
-// const methodOverride = require('method-override'); 
-// // for put method
-// >>>>>>> main
+
 const app = express();
+
+// for external files like, css
+app.use(express.static('public'));
+
+// for handlebars
+app.engine('handlebars',exphbs.engine({
+    defaultLayout: 'main',
+    helpers:{
+        isCategorySelected: function (category, value) { // Registering helper to display the selected category in update donation form
+            return category === value;
+        },
+        formatDate: function(date) {
+            return date.toLocaleDateString('en-US');
+        } 
+    }
+
+}));
+app.set('view engine', 'handlebars');
+
+
+app.use(express.urlencoded({extended: false}));
+
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -35,16 +53,9 @@ app.get('/admin/dashboard', (req, res) => {
     if (!req.session.admin) return res.redirect('/admin/login');
     res.send('Welcome to the admin dashboard!');
   });
-// for external files like, css
-app.use(express.static('public'));
 
-// for handlebars
-app.engine('handlebars',exphbs.engine({
-    defaultLayout: 'main'
 
-}));
-app.set('view engine', 'handlebars');
-app.use(express.urlencoded({extended: false}));
+
 
 // sessions for logins
 app.use(session({
