@@ -1,0 +1,62 @@
+<section class="admindonate-section">
+  <h1 class="admindonate-title">Manage Donations</h1>
+
+  <div class="admindonatetable-container">
+    <table class="admindonate-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Image</th>
+          <th>Category</th>
+          <th>Location</th>
+          <th>Published Date</th>
+          <th>Status</th>
+          <th>Donor</th>
+          <th>Booked By</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each donations}}
+        <tr>
+          <td class="table-cell">{{title}}</td>
+          <td class="table-cell">
+            {{#if image}}
+            <img src="{{image}}" alt="{{title}}" class="donation-image">
+            {{else}}
+            No Image
+            {{/if}}
+          </td>
+          <td class="table-cell">{{category}}</td>
+          <td class="table-cell">{{pickupLocation}}</td>
+          <td class="table-cell">{{formatDate publishedDate}}</td>
+          <td class="table-cell">
+            {{#if available}}<span class="status available">Available</span>{{else}}<span class="status booked">Booked</span>{{/if}}
+          </td>
+          <td class="table-cell">
+            {{#if userId}}
+            <span class="user-name">{{userId.firstname}} {{userId.lastname}}</span>
+            {{else}}
+            <span class="deleted-user">[Deleted User]</span>
+            {{/if}}
+          </td>
+          <td class="table-cell">
+            {{#if bookedBy}}
+            <span class="user-name">{{bookedBy.firstname}} {{bookedBy.lastname}}</span>
+            {{else}}
+            <span class="no-booked-user">-</span>
+            {{/if}}
+          </td>
+          <td class="table-cell">
+            <form action="/admin/donations/{{_id}}?_method=DELETE" method="POST">
+              <button type="submit" class="btn btn-danger" onclick="return confirm('Permanently delete this donation?')">
+                <i class="fas fa-trash-alt"></i> Delete
+              </button>
+            </form>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</section>
