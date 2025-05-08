@@ -419,13 +419,13 @@ app.post('/deletedonation/:id/delete', async (req, res) => {
     const donationId = req.params.id;
 
     if (!req.session.user) {
-        return res.redirect('/login');  // Redirect if user is not logged in
+        return res.redirect('/login');
     }
 
     try {
         const donation = await Donation.findById(donationId);
 
-        // Check if the donation exists and if it belongs to the logged-in user
+        // Checking if the donation exists and if it belongs to the logged-in user
         if (!donation || donation.userId.toString() !== req.session.user._id.toString()) {
             return res.status(403).render('error', { message: 'Unauthorized' });
         }
@@ -435,10 +435,68 @@ app.post('/deletedonation/:id/delete', async (req, res) => {
 
         // Set success message
         req.session.deleteSuccess = 'Donation deleted successfully!';
-        res.redirect('/mydonations');  // Redirect to "My Donations" page
+        res.redirect('/mydonations');
     } catch (error) {
         console.error(error);
         res.status(500).render('error', { message: 'Failed to delete donation' });
+    }
+});
+
+// update user details
+// getting user edit form
+app.get('/edituser-form/:id', async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+
+    try {
+        const user = await User.findById(req.params.id);
+
+        
+        if (!user || user._id.toString() !== req.session.user._id.toString()) {
+            return res.status(403).render('error', { message: 'Unauthorized' });
+        }
+
+        res.render('edituser-form', {
+            user: req.session.user,
+            editUser: user.toJSON()
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).render('error', { message: 'Failed to load user' });
+    }
+});
+
+// updating user data
+app.put('/edituser/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const updatedUserData = {
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            contactnumber: req.body.contactnumber,
+            address: req.body.address
+        };
+        if (req.body.password) {
+            updatedUserData.password = await bcrypt.hash(req.body.password, 10);
+        }
+
+        const user = await User.findByIdAndUpdate(userId, updatedUserData, { new: true });
+
+        // Updating the session with new data
+        req.session.user = user;
+        req.session.save(err => {
+            if (err) console.error('Session save error:', err);
+            res.redirect('/my-account');
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.render('edituser-form', { 
+            error: 'Update failed. Please try again.',
+            editUser: req.body
+        });
     }
 });
 
