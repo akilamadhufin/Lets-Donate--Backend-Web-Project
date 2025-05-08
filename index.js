@@ -353,8 +353,94 @@ app.get('/my-account', async (req, res) => {
     }
 });
 
+// update donations
 
+// Show update donation form
+app.get('/updatedonations-form/:id', async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
 
+    try {
+        const donation = await Donation.findById(req.params.id);
+
+        // Optional: Check if donation belongs to the logged-in user
+        if (!donation || donation.userId.toString() !== req.session.user._id.toString()) {
+            return res.status(403).render('error', { message: 'Unauthorized' });
+        }
+
+        res.render('updatedonations-form', {
+            user: req.session.user,
+            donation: donation.toJSON()
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).render('error', { message: 'Failed to load donation' });
+    }
+});
+
+// Handle donation update submission
+app.put('/updatedonations/:id', upload.single('image'), async (req, res) => {
+    try {
+        const donationId = req.params.id;
+        const updatedData = {
+            title: req.body.title,
+            description: req.body.description,
+            category: req.body.category,
+            pickupLocation: req.body.pickupLocation,
+            available: req.body.available,
+            image: req.file ? '/uploads/' + req.file.filename : req.body.existingImage,
+        };
+
+        // Find and update the donation document
+        const donation = await Donation.findById(donationId);
+
+        // Optional: Check if donation belongs to the logged-in user
+        if (!donation || donation.userId.toString() !== req.session.user._id.toString()) {
+            return res.status(403).render('error', { message: 'Unauthorized' });
+        }
+
+        // Update donation
+        await Donation.findByIdAndUpdate(donationId, updatedData);
+
+        // Set success message
+        req.session.updateSuccess = 'Donation updated successfully!';
+        
+        res.redirect('/mydonations');
+    } catch (error) {
+        console.error(error);
+        res.render('updatedonations-form', { error: 'Something went wrong while updating your donation' });
+    }
+});
+
+// deleting donations
+
+app.post('/deletedonation/:id/delete', async (req, res) => {
+    const donationId = req.params.id;
+
+    if (!req.session.user) {
+        return res.redirect('/login');  // Redirect if user is not logged in
+    }
+
+    try {
+        const donation = await Donation.findById(donationId);
+
+        // Check if the donation exists and if it belongs to the logged-in user
+        if (!donation || donation.userId.toString() !== req.session.user._id.toString()) {
+            return res.status(403).render('error', { message: 'Unauthorized' });
+        }
+
+        // Delete the donation
+        await Donation.findByIdAndDelete(donationId);
+
+        // Set success message
+        req.session.deleteSuccess = 'Donation deleted successfully!';
+        res.redirect('/mydonations');  // Redirect to "My Donations" page
+    } catch (error) {
+        console.error(error);
+        res.status(500).render('error', { message: 'Failed to delete donation' });
+    }
+});
 
 
 //home
