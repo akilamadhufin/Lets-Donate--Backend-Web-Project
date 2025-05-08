@@ -1,4 +1,4 @@
-<div class="reg-container">
+<div class="updatedonate-container">
     <h1>Update Donation</h1>
     <form action="/updatedonations/{{donation._id}}?_method=PUT" method="POST" enctype="multipart/form-data">
         <div class="form-group">
@@ -29,6 +29,7 @@
         </div>
 
         <div class="form-group">
+            <div class="radio-group">
             <label>Item Available</label><br>
             <label>
                 <input type="radio" name="available" value="true" {{#if donation.available}}checked{{/if}}> Yes
@@ -37,7 +38,7 @@
                 <input type="radio" name="available" value="false" {{#unless donation.available}}checked{{/unless}}> No
             </label>
         </div>
-
+    </div>
         <div class="form-group">
             <label for="image">Upload New Image (Optional)</label>
             <input type="file" id="image" name="image" accept="image/*">

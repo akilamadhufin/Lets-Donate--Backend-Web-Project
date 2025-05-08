@@ -1,8 +1,8 @@
 <h1>{{title}}</h1>
-<div class="reg-container">
+<div class="edituser-container">
     <h1>Update your account</h1>
     <form action="/edituser/{{editUser._id}}?_method=PUT" method="post">
-        <!-- Hidden field to specify the method (since the form is using POST but we want to use PUT or PATCH) -->
+        <!-- we use hidden method (since the form is using POST but we want to use PUT or PATCH) -->
         <input type="hidden" name="_method" value="PUT">
 
         <div class="form-group">

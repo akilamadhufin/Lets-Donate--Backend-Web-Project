@@ -26,8 +26,7 @@
                 <h3>{{this.title}}</h3>
                 <p><strong>Pickup:</strong> {{this.pickupLocation}}</p>
                 <p><strong>Available:</strong> {{#if this.available}}Yes{{else}}No{{/if}}</p>
-
-                <!-- Book Item Button with Link to Booking Route -->
+                <button type="submit" class="view-btn-card">View details</button>
                 {{#if this.available}}
                     <form action="/book/{{this._id}}" method="POST">
                         <button type="submit" class="book-btn-card">Book Item</button>
