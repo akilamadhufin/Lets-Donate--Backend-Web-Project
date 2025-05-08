@@ -226,19 +226,19 @@ app.post('/login', async (req, res) => {
     try {
         const user = await Users.findOne({ email });
         
-        if (user && user.password === password) {
-            req.session.user = user;  
+        if (user && await bcrypt.compare(password, user.password)) {
+            req.session.user = user;
+            
+            if (user.isAdmin) {
+                return res.redirect('/admin');
+            }
             res.redirect('/');
         } else {
-            res.render('login', { 
-                error: 'Invalid credentials' 
-            });
+            res.render('login', { error: 'Invalid credentials' });
         }
     } catch (error) {
         console.error(error);
-        res.render('login', { 
-            error: 'Something went wrong' 
-        });
+        res.render('login', { error: 'Something went wrong' });
     }
 });
 
