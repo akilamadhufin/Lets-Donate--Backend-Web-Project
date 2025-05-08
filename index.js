@@ -762,16 +762,16 @@ app.delete('/admin/donations/:id', isAdmin, async (req, res) => {
 });
 
 //home
-app.get('/', (req, res) => {
-    if (req.session.user) {
-        // For logged-in users
+app.get('/', async(req, res) => {
+    try {
+        const allItems = await Donation.find();
         res.render('index', {
-            user: req.session.user,  
+            title: 'All Donated Items',
+            allItems: allItems.map(item => item.toJSON())
         });
-    } else {
-        // For logged-out users
-        res.render('index');
+    } catch (error) {
+        console.log(error);
+        res.status(500).render('error', { message: 'Failed to fetch items' });
     }
 });
-
 
