@@ -505,6 +505,30 @@ app.get('/about-us', (req, res) => {
     res.render('about-us', { user: req.user });
 });
 
+//booking items
+// getting mycart
+app.get('/mycart', async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+
+    const userId = req.session.user._id;
+    const bookings = await Cart.find({ userId })
+    .populate('itemId', 'title pickupLocation image available')
+    .lean(); // This will convert the Mongoose documents to plain JavaScript objects
+
+// Flatten the data structure
+bookings.forEach(booking => {
+    booking.itemId = booking.itemId || {}; // Ensure itemId is an object if null
+    booking.itemId.title = booking.itemId.title || '';
+    booking.itemId.pickupLocation = booking.itemId.pickupLocation || '';
+    booking.itemId.image = booking.itemId.image || '';
+    booking.itemId.available = booking.itemId.available || false;
+});
+
+res.render('mycart', { bookings });
+});
+
 
 //home
 app.get('/', (req, res) => {
