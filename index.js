@@ -683,9 +683,56 @@ app.get('/create-admin', async (req, res) => {
     }
 });
 
+// get admin-user edit form
+app.get('/admin/users/:id/update', isAdmin, async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await User.findById(userId).lean(); // lean () added hbs does not allow to access to User.js
+        
+        if (!user) {
+            return res.status(404).render('error', { message: 'User not found' });
+        }
+
+        res.render('admin-useredit-form', { user });
+    } catch (error) {
+        console.error(error);
+        res.status(500).render('error', { message: 'Failed to load user edit form' });
+    }
+});
 
 
+//Admin edit users
+app.post('/admin/users/:id/update', isAdmin, async (req, res) => {
+    const userId = req.params.id;
+    const updatedData = {
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      email: req.body.email,
+      contactnumber: req.body.contactnumber,
+      address: req.body.address,
+      isAdmin: req.body.isAdmin === 'true' // converting to boolean
+    };
+  
+    try {
+      await User.findByIdAndUpdate(userId, updatedData);
+      res.redirect('/admin/users');
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Failed to update user');
+    }
+  });
 
+  // Admin delete user
+  app.delete('/admin/users/:id', isAdmin, async (req, res) => {
+    try {
+      const userId = req.params.id;
+      await User.findByIdAndDelete(userId);
+      res.redirect('/admin/users');
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Failed to delete user');
+    }
+  });
 
 //home
 app.get('/', (req, res) => {
