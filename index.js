@@ -35,26 +35,7 @@ app.set('view engine', 'handlebars');
 
 app.use(express.urlencoded({extended: false}));
 
-
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-app.use(session({
-  secret: 'your-secret',
-  resave: false,
-  saveUninitialized: false
-}));
-
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
-app.get('/admin/dashboard', (req, res) => {
-    if (!req.session.admin) return res.redirect('/admin/login');
-    res.send('Welcome to the admin dashboard!');
-  });
-
-
+app.use(methodOverride('_method'));
 
 
 // sessions for logins
@@ -65,10 +46,24 @@ app.use(session({
     cookie: { secure: false }
 }));
 
+// Nodemailer configuration
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+
 // for passport
 app.use(passport.initialize());
 app.use(passport.session());
 
+// user session is available for handlbars
+app.use((req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+});
 
 // multer for save images, Images are saved in uploads folder, then the url string will be saved to mongodb
 const storage = multer.diskStorage({
