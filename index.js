@@ -85,8 +85,7 @@ mongoose.connect(dbURI)
 // if it connects do the below
 .then ((result)=>
     {
-        const PORT = process.env.PORT || 3000;
-        app.listen(PORT, () => console.log("listening on "+ PORT));
+
         console.log('Connected to db');
     })
     // if does not connect, do the below
@@ -776,3 +775,5 @@ app.get('/', async(req, res) => {
     }
 });
 
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("listening on "+ PORT));
