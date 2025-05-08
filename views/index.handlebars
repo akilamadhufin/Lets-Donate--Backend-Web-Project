@@ -56,13 +56,10 @@
                         <button id="send-message-btn">Send Message</button>
 
                         <!-- Book Item Button in Modal -->
-                        {{#if this.available}}
-                        <form action="/book/{{this._id}}" method="POST">
+                        <form method="POST" id="book-form" style="display: none;">
                             <button id="book-item-btn" type="submit">Book Item</button>
                         </form>
-                        {{else}}
-                        <button id="book-item-btn" type="button" disabled>Item Unavailable</button>
-                        {{/if}}
+                        <button id="unavailable-btn" style="display: none;" disabled>Item Unavailable</button>
                     </div>
                 </div>
             </div>
