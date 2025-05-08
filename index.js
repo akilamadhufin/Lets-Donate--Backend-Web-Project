@@ -115,7 +115,7 @@ mongoose.connect(dbURI)
 
 const Users = require('./models/users');
 const Donations = require('./models/Donations');
-const Users = require('./models/Users');
+//const Users = require('./models/Users');
 const Donation = require('./models/Donations');
 
 // passport configuration
