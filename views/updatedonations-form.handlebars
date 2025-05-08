@@ -1,0 +1,57 @@
+<div class="updatedonate-container">
+    <h1>Update Donation</h1>
+    <form action="/updatedonations/{{donation._id}}?_method=PUT" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="title">Item Title</label>
+            <input type="text" id="title" name="title" value="{{donation.title}}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Item Description</label>
+            <input type="text" id="description" name="description" value="{{donation.description}}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+                <option value="Clothing" {{#if (isCategorySelected donation.category "Clothing")}}selected{{/if}}>Clothing</option>
+                <option value="Books" {{#if (isCategorySelected donation.category "Books")}}selected{{/if}}>Books</option>
+                <option value="Electronics" {{#if (isCategorySelected donation.category "Electronics")}}selected{{/if}}>Electronics</option>
+                <option value="Furniture" {{#if (isCategorySelected donation.category "Furniture")}}selected{{/if}}>Furniture</option>
+                <option value="Toys" {{#if (isCategorySelected donation.category "Toys")}}selected{{/if}}>Toys</option>
+                <option value="Others" {{#if (isCategorySelected donation.category "Others")}}selected{{/if}}>Others</option>
+            </select>
+        </div>
+
+       <div class="form-group">
+            <label for="pickupLocation">Pickup Location</label>
+            <input type="text" id="pickupLocation" name="pickupLocation" value="{{donation.pickupLocation}}" required>
+        </div>
+
+        <div class="form-group">
+            <div class="radio-group">
+            <label>Item Available</label><br>
+            <label>
+                <input type="radio" name="available" value="true" {{#if donation.available}}checked{{/if}}> Yes
+            </label>
+            <label>
+                <input type="radio" name="available" value="false" {{#unless donation.available}}checked{{/unless}}> No
+            </label>
+        </div>
+    </div>
+        <div class="form-group">
+            <label for="image">Upload New Image (Optional)</label>
+            <input type="file" id="image" name="image" accept="image/*">
+        </div>
+
+        {{#if donation.image}}
+        <div class="form-group">
+            <label>Current Image:</label>
+            <img src="{{donation.image}}" alt="Current Donation Image" width="150">
+        </div>
+        {{/if}}
+
+        <button type="submit" class="submit-btn">Update Donation</button>
+    </form>
+</div>
+  

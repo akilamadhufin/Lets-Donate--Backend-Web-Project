@@ -40,17 +40,11 @@ const userSchema = new mongoose.Schema({
         required: true
         },
 
+    isAdmin: {
+        type: Boolean,
+        default: false
+        }  
 
         
 });
-
-// <<<<<<< Gimhani-Kaushalya
-// module.exports = mongoose.model("Users",userSchema)
-
-  
-// =======
-
-// module.exports = mongoose.model("Users",userSchema)
-
-// module.exports = mongoose.model("User",userSchema)
-// >>>>>>> main
+module.exports = mongoose.model("User",userSchema)

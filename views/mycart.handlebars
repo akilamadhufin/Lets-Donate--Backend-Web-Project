@@ -1,0 +1,36 @@
+<h1>My Booked Items</h1>
+
+<section id="my-donations" class="section">
+  <div class="donations-list">
+    {{#each bookings}}
+    <div class="donation-card">
+      
+      <div class="donation-image-container">
+        {{#if this.itemId.image}}
+          <img src="http://localhost:3000/{{this.itemId.image}}" alt="Booked Item" class="donation-image">
+        {{/if}}
+      </div>
+
+      <div class="donation-details">
+        <div class="location">
+          <p><strong>Pickup Location:</strong> {{this.itemId.pickupLocation}}</p>
+        </div>
+        <div class="available">
+          <p><strong>Availability:</strong> {{#if this.itemId.available}}Available{{else}}Taken{{/if}}</p>
+        </div>
+      </div>
+
+
+        <form action="/cart/{{this.itemId._id}}?_method=DELETE" method="POST" onsubmit="return confirm('Remove this item from your cart?');">
+        <button type="submit" class="delete-btn">Remove</button>
+        </form>
+
+    </div>
+    {{/each}}
+
+    {{#unless bookings.length}}
+    <p class="empty-cart">Your cart is empty</p>
+    {{/unless}}
+
+  </div>
+</section>

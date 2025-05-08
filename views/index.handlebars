@@ -26,8 +26,7 @@
                 <h3>{{this.title}}</h3>
                 <p><strong>Pickup:</strong> {{this.pickupLocation}}</p>
                 <p><strong>Available:</strong> {{#if this.available}}Yes{{else}}No{{/if}}</p>
-
-                <!-- Book Item Button with Link to Booking Route -->
+                <button type="submit" class="view-btn-card">View details</button>
                 {{#if this.available}}
                     <form action="/book/{{this._id}}" method="POST">
                         <button type="submit" class="book-btn-card">Book Item</button>
@@ -57,13 +56,10 @@
                         <button id="send-message-btn">Send Message</button>
 
                         <!-- Book Item Button in Modal -->
-                        {{#if this.available}}
-                        <form action="/book/{{this._id}}" method="POST">
+                        <form method="POST" id="book-form" style="display: none;">
                             <button id="book-item-btn" type="submit">Book Item</button>
                         </form>
-                        {{else}}
-                        <button id="book-item-btn" type="button" disabled>Item Unavailable</button>
-                        {{/if}}
+                        <button id="unavailable-btn" style="display: none;" disabled>Item Unavailable</button>
                     </div>
                 </div>
             </div>

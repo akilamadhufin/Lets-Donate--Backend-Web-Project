@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('send-message-btn');
     const mapElement = document.getElementById('map');
     const searchInput = document.getElementById('search-input');
+    const bookForm = document.getElementById('book-form');
+    const unavailableBtn = document.getElementById('unavailable-btn');
+    const bookItemBtn = document.getElementById('book-item-btn');
     
     let currentUserEmail = "";
     let map = null;
@@ -25,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // to open each modal when click on each item card
   document.querySelector('.items-grid').addEventListener('click', (e) => {
+    if (!e.target.classList.contains('view-btn-card')) return;
     const card = e.target.closest('.item-card');
     if (!card) return;
 
@@ -46,6 +50,17 @@ document.addEventListener('DOMContentLoaded', () => {
     modalDate.textContent = formatDate(dataset.date);
     document.getElementById('modal-available').textContent = dataset.available === 'true' ? 'Yes' : 'No';
     currentUserEmail = dataset.user;
+    const isAvailable = dataset.available === 'true';
+    const itemId = dataset.id;
+
+    if (isAvailable) {
+      bookForm.style.display = 'block';
+      unavailableBtn.style.display = 'none';
+      bookForm.action = `/book/${itemId}`;
+    } else {
+      bookForm.style.display = 'none';
+      unavailableBtn.style.display = 'block';
+    }
 
 
     // adding map feature

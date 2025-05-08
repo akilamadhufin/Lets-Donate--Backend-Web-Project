@@ -1,0 +1,46 @@
+<h1 class="admin-title">Admin Dashboard</h1>
+
+<div class="admin-links">
+    <a href="/admin/users" class="dashboardbtn">Manage Users</a>
+    <a href="/admin/donations" class="dashboardbtn">Manage Donations</a>
+</div>
+
+<div class="dashboard-stats">
+    <!-- Users Card -->
+    <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-content">
+            <h3>Total Users</h3>
+            <p class="stat-number">{{stats.totalUsers}}</p>
+        </div>
+    </div>
+
+    <!-- Donations Card -->
+    <div class="stat-card">
+        <div class="stat-icon">🎁</div>
+        <div class="stat-content">
+            <h3>Total Donations</h3>
+            <p class="stat-number">{{stats.totalDonations}}</p>
+        </div>
+    </div>
+
+    <!-- Available Donations -->
+    <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-content">
+            <h3>Available Donations</h3>
+            <p class="stat-number">{{stats.availableDonations}}</p>
+        </div>
+    </div>
+
+    <!-- Booked Donations -->
+    <div class="stat-card">
+        <div class="stat-icon">📦</div>
+        <div class="stat-content">
+            <h3>Booked Donations</h3>
+            <p class="stat-number">{{stats.bookedDonations}}</p>
+        </div>
+    </div>
+</div>
+
+
