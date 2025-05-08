@@ -34,7 +34,13 @@ const donationSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true 
+    },
+    bookedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: null
     }
+
 });
 
 const Donations = mongoose.model('Donation', donationSchema);
