@@ -641,7 +641,51 @@ app.get('/admin', isAdmin, async (req, res) => {
     }
  });
 
- 
+ // Admin Users List
+app.get('/admin/users', isAdmin, async (req, res) => {
+    try {
+        const users = await User.find().lean();
+        res.render('admin-users', { users });
+    } catch (error) {
+        res.status(500).render('error', { message: 'Failed to load users' });
+    }
+});
+
+// Admin Donations List
+app.get('/admin/donations', isAdmin, async (req, res) => {
+    try {
+        const donations = await Donation.find().populate('userId').lean();
+        res.render('admin-donations', { donations });
+    } catch (error) {
+        res.status(500).render('error', { message: 'Failed to load donations' });
+    }
+});
+
+// creating admin account using this one time route
+// creating admin account using the route
+app.get('/create-admin', async (req, res) => {
+    try {
+        const adminUser = new User({
+            firstname: 'Admin',
+            lastname: 'User',
+            email: 'akilakangasala@gmail.com',
+            contactnumber: '+1234567890',
+            address: 'Admin Address',
+            password: await bcrypt.hash('admin123', 10),
+            isAdmin: true
+        });
+        
+        await adminUser.save();
+        res.send('Admin user created successfully');
+    } catch (error) {
+        console.error('Error creating admin:', error);
+        res.status(500).send('Error creating admin user');
+    }
+});
+
+
+
+
 
 //home
 app.get('/', (req, res) => {
