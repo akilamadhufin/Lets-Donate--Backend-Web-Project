@@ -26,6 +26,8 @@ The goal is to make item donation easy, organized, and accessible for everyone. 
 - **REST API** - Used to handle communication between frontend and backend
 - **HTML/CSS/JavaScript** - For building the user interface
 
+## Kanban board-   https://trello.com/b/MkoULxac/lets-donate
+
 ## Getting Started
 
 ### Clone our Repository
