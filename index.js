@@ -734,6 +734,33 @@ app.post('/admin/users/:id/update', isAdmin, async (req, res) => {
     }
   });
 
+  //Admin manage donations
+app.get('/admin/donations', isAdmin, async (req, res) => {
+    try {
+        const donations = await Donation.find()
+            .populate('userId', 'firstname lastname email') // populate donor info
+            .populate('bookedBy', 'firstname lastname email') // populate booked user info
+            .lean();
+
+        res.render('admin-donations', { 
+            donations,
+        });
+    } catch (error) {
+        res.status(500).render('error', { message: 'Failed to load donations' });
+    }
+});
+
+// Admin Delete Donation
+app.delete('/admin/donations/:id', isAdmin, async (req, res) => {
+    try {
+        await Donation.findByIdAndDelete(req.params.id);
+        res.redirect('/admin/donations');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Failed to delete donation');
+    }
+});
+
 //home
 app.get('/', (req, res) => {
     if (req.session.user) {
