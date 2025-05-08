@@ -582,7 +582,6 @@ app.post('/book/:id', async (req, res) => {
 });
 
 // user delete booked items
-
 app.delete('/cart/:id', async (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login');
@@ -607,6 +606,42 @@ app.delete('/cart/:id', async (req, res) => {
         res.status(500).send('An error occurred while removing the item.');
     }
 });
+
+// admin panel
+// admin middlewear
+const isAdmin = (req, res, next) => {
+    if (req.session.user && req.session.user.isAdmin) {
+        return next();
+    }
+    res.status(403).render('login', { message: 'Admin access required' });
+};
+
+// Admin Dashboard
+app.get('/admin', isAdmin, async (req, res) => {
+    try {
+        // Fetch counts in parallel for better performance
+        const [totalUsers, totalDonations, availableDonations, bookedDonations] = await Promise.all([
+            User.countDocuments(),
+            Donation.countDocuments(),
+            Donation.countDocuments({ available: true }),
+            Donation.countDocuments({ available: false })
+        ]);
+        res.render('admin-dashboard', {
+            stats: {
+                totalUsers,
+                totalDonations,
+                availableDonations,
+                bookedDonations
+            }
+        });
+        
+    } catch (error) {
+        console.error('Dashboard Error:', error);
+        res.status(500).render('error', { message: 'Failed to load dashboard statistics' });
+    }
+ });
+
+ 
 
 //home
 app.get('/', (req, res) => {
