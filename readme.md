@@ -12,7 +12,7 @@ The goal is to make item donation easy, organized, and accessible for everyone. 
 - **Browse Donations by Category** - Display donations according to categories
 - **Edit/Delete Donations** - Enable users to edit or remove their donations
 - **Admin Login and Dashboard** - Admin panel where admins can log in and manage donations (approve, reject, edit, or delete)
-- **Admin Approve or Reject Donations** - Admin should be able to approve or reject a donation submission
+- **Admin mange users and donations** - Admin should be able to edit/remove users and donation submission
 - **Email Confirmation on Submission** - Send an email confirmation to users when they submit an item
 - **Item Pickup Status Update** - Allow users to mark items as "picked up" once they have been collected. If it availabe, the users can mark them as availabe
 - **Item History for Users** - Users should be able to view their donation history
