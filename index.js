@@ -76,7 +76,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-//had to change the dns server to google dns as DNA ISP is not supporting srv
 const dbURI = 'mongodb+srv://'+process.env.DBUSERNAME+':'+process.env.DBPASSWORD+'@'+process.env.CLUSTER+'.mongodb.net/'+process.env.DB+'?retryWrites=true&w=majority&appName='+process.env.CLUSTER;
 console.log(dbURI);
 
@@ -97,16 +96,10 @@ mongoose.connect(dbURI)
 
 
 //loading the schema
-// <<<<<<< Gimhani-Kaushalya
-// const Users = require('./models/users');
-// const Donations = require('./models/Donations');
-// =======
 
-// const Users = require('./models/users');
-// const Donations = require('./models/Donations');
-// //const Users = require('./models/Users');
-// const Donation = require('./models/Donations');
-// >>>>>>> main
+const Users = require('./models/Users');
+const Donations = require('./models/Donations');
+const Cart = require('./models/Cart');
 
 // passport configuration
 passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
@@ -224,9 +217,6 @@ app.post('/users',
         }
     }
 );
-
-
-// delete and update- we have to use them in the project
 
 
 // login
