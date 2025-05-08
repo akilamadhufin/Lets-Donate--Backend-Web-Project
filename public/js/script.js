@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // to open each modal when click on each item card
   document.querySelector('.items-grid').addEventListener('click', (e) => {
+    if (!e.target.classList.contains('view-btn-card')) return;
     const card = e.target.closest('.item-card');
     if (!card) return;
 
