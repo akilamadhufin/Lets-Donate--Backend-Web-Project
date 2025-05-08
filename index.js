@@ -272,7 +272,6 @@ app.get('/donate-form', (req, res) => {
 // Handle donation form submission
 app.post('/donate', upload.single('image'), async (req, res) => {
     try {
-        // Attach the image path to the donation object if the image was uploaded
         const newDonationData = {
             title: req.body.title,
             description: req.body.description,
@@ -284,6 +283,23 @@ app.post('/donate', upload.single('image'), async (req, res) => {
 
         const newDonation = new Donations(newDonationData);
         await newDonation.save();
+
+        // email content 
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: req.session.user.email, 
+            subject: 'Donation Confirmation',
+            text: `Dear ${req.session.user.firstname},\n\nThank you for your donation! Here are the details of your donation:\n\nTitle: ${req.body.title}\nDescription: ${req.body.description}\nCategory: ${req.body.category}\nPickup Location: ${req.body.pickupLocation}\n\nThank you for your generosity!\n\nBest regards,\nThe Let's Donate Team`
+        };   
+        // Send email
+        await transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+                console.error('Error sending email:', err);
+                return res.status(500).render('donate-form', { error: 'Error sending email' });
+            }
+            console.log('Email sent:', info.response);
+        });             
+
         req.session.donationSuccess = 'Donation added successfully! You can view your donations on the "My Donations" page.';
         res.redirect('/mydonations');
     } catch (error) {
@@ -293,7 +309,6 @@ app.post('/donate', upload.single('image'), async (req, res) => {
 });
 
 // displaying donations in mydonation page
-
 app.get('/mydonations', async (req, res) => {
     if (req.session.user) {
         try {
@@ -315,6 +330,9 @@ app.get('/mydonations', async (req, res) => {
         res.redirect('/login');
     }
 });
+
+
+
 
 
 
