@@ -2,42 +2,30 @@
 <div class="reg-container">
     <h1>Create your account</h1>
 
-    {{#if errors}}
-        <ul class="error-messages">
-            {{#each errors}}
-                <li>{{this.msg}}</li>
-            {{/each}}
-        </ul>
-    {{/if}}
-
-    {{#if error}}
-        <p class="error-message">{{error}}</p>
-    {{/if}}
-
     <form action="/users" method="post">
         <div class="form-group">
             <label for="firstname">First Name</label>
-            <input type="text" id="firstname" name="firstname" required value="{{firstname}}">
+            <input type="text" id="firstname" name="firstname" required>
         </div>
 
         <div class="form-group">
             <label for="lastname">Last Name</label>
-            <input type="text" id="lastname" name="lastname" required value="{{lastname}}">
+            <input type="text" id="lastname" name="lastname" required>
         </div>
 
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="text" id="email" name="email" required value="{{email}}">
+            <input type="text" id="email" name="email" required>
         </div>
 
         <div class="form-group">
             <label for="contactnumber">Contact Number</label>
-            <input type="text" id="contactnumber" name="contactnumber" required value="{{contactnumber}}">
+            <input type="text" id="contactnumber" name="contactnumber" required>
         </div>
 
         <div class="form-group">
             <label for="address">Address</label>
-            <input type="text" id="address" name="address" required value="{{address}}">
+            <input type="text" id="address" name="address" required>
         </div>
 
         <div class="form-group">
