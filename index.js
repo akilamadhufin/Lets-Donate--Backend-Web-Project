@@ -555,9 +555,32 @@ app.post('/book/:id', async (req, res) => {
           userId: req.session.user._id,
           itemId: donation._id
         });
+    // Send email to the user who booked
+    const userMailOptions = {
+        from: process.env.EMAIL_USER,
+        to: req.session.user.email,
+        subject: 'Booking Confirmation',
+        text: `Dear ${req.session.user.firstname},\n\nYou have successfully booked the item: ${donation.title}.\n\nBest regards,\nThe Let's Donate Team`
+    };
 
+    // Send email to donor
+    const publisherMailOptions = {
+        from: process.env.EMAIL_USER,
+        to: donation.userId.email,
+        subject: 'Your Item Has Been Booked',
+        text: `Dear ${donation.userId.firstname},\n\nYour item: ${donation.title} has been booked by ${req.session.user.firstname}.\n\nBest regards,\nThe Let's Donate Team`
+    };
 
-});        
+        await transporter.sendMail(userMailOptions);
+        await transporter.sendMail(publisherMailOptions);
+
+        res.redirect('/mycart');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Something went wrong');
+    }
+});
+
 //home
 app.get('/', (req, res) => {
     if (req.session.user) {
