@@ -10,7 +10,13 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
 const adminRoutes = require('./routes/admin/auth');
+// <<<<<<< Gimhani-Kaushalya
 
+// =======
+// const nodemailer = require('nodemailer');
+// const methodOverride = require('method-override'); 
+// // for put method
+// >>>>>>> main
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -85,8 +91,16 @@ mongoose.connect(dbURI)
 
 
 //loading the schema
-const Users = require('./models/users');
-const Donations = require('./models/Donations');
+// <<<<<<< Gimhani-Kaushalya
+// const Users = require('./models/users');
+// const Donations = require('./models/Donations');
+// =======
+
+// const Users = require('./models/users');
+// const Donations = require('./models/Donations');
+// //const Users = require('./models/Users');
+// const Donation = require('./models/Donations');
+// >>>>>>> main
 
 // passport configuration
 passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
