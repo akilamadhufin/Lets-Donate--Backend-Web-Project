@@ -25,7 +25,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
+
   },
   "author": "akila,gimhani,udashi",
   "license": "ISC",
