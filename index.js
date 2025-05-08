@@ -529,7 +529,35 @@ bookings.forEach(booking => {
 res.render('mycart', { bookings });
 });
 
+app.post('/book/:id', async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
 
+    try {
+        const donation = await Donation.findById(req.params.id).populate('userId');
+
+        if (!donation) {
+            return res.status(404).send('Item not found');
+        }
+
+        if (!donation.available) {
+            return res.status(400).send('Item already booked');
+        }
+
+        // Update the donation
+        donation.available = false;
+        donation.bookedBy = req.session.user._id;
+        await donation.save();
+
+        // Create a Cart entry
+        await Cart.create({
+          userId: req.session.user._id,
+          itemId: donation._id
+        });
+
+
+});        
 //home
 app.get('/', (req, res) => {
     if (req.session.user) {
