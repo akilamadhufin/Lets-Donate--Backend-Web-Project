@@ -581,6 +581,33 @@ app.post('/book/:id', async (req, res) => {
     }
 });
 
+// user delete booked items
+
+app.delete('/cart/:id', async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+
+    try {
+        // Remove the cart entry
+        await Cart.findOneAndDelete({
+            userId: req.session.user._id,
+            itemId: req.params.id // Changed from itemId to params.id
+        });
+
+        // Update donation availability
+        await Donation.findByIdAndUpdate(req.params.id, {
+            available: true,
+            bookedBy: null
+        });
+
+        res.redirect('/mycart');
+    } catch (error) {
+        console.error('Error removing item from cart:', error);
+        res.status(500).send('An error occurred while removing the item.');
+    }
+});
+
 //home
 app.get('/', (req, res) => {
     if (req.session.user) {
