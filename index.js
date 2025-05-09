@@ -519,7 +519,7 @@ app.get('/mycart', async (req, res) => {
 
 // Flatten the data structure
 bookings.forEach(booking => {
-    booking.itemId = booking.itemId || {}; // Ensure itemId is an object if null
+    booking.itemId = booking.itemId || {};
     booking.itemId.title = booking.itemId.title || '';
     booking.itemId.pickupLocation = booking.itemId.pickupLocation || '';
     booking.itemId.image = booking.itemId.image || '';
@@ -619,7 +619,7 @@ const isAdmin = (req, res, next) => {
 // Admin Dashboard
 app.get('/admin', isAdmin, async (req, res) => {
     try {
-        // Fetch counts in parallel for better performance
+        
         const [totalUsers, totalDonations, availableDonations, bookedDonations] = await Promise.all([
             User.countDocuments(),
             Donation.countDocuments(),
@@ -661,7 +661,6 @@ app.get('/admin/donations', isAdmin, async (req, res) => {
     }
 });
 
-// creating admin account using this one time route
 // creating admin account using the route
 app.get('/create-admin', async (req, res) => {
     try {
@@ -687,7 +686,7 @@ app.get('/create-admin', async (req, res) => {
 app.get('/admin/users/:id/update', isAdmin, async (req, res) => {
     try {
         const userId = req.params.id;
-        const user = await User.findById(userId).lean(); // lean () added hbs does not allow to access to User.js
+        const user = await User.findById(userId).lean(); // lean () added, hbs does not allow to access to User.js
         
         if (!user) {
             return res.status(404).render('error', { message: 'User not found' });
@@ -710,7 +709,7 @@ app.post('/admin/users/:id/update', isAdmin, async (req, res) => {
       email: req.body.email,
       contactnumber: req.body.contactnumber,
       address: req.body.address,
-      isAdmin: req.body.isAdmin === 'true' // converting to boolean
+      isAdmin: req.body.isAdmin === 'true'
     };
   
     try {
@@ -738,8 +737,8 @@ app.post('/admin/users/:id/update', isAdmin, async (req, res) => {
 app.get('/admin/donations', isAdmin, async (req, res) => {
     try {
         const donations = await Donation.find()
-            .populate('userId', 'firstname lastname email') // populate donor info
-            .populate('bookedBy', 'firstname lastname email') // populate booked user info
+            .populate('userId', 'firstname lastname email')
+            .populate('bookedBy', 'firstname lastname email')
             .lean();
 
         res.render('admin-donations', { 
