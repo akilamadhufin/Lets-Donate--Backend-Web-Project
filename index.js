@@ -167,7 +167,11 @@ app.get('/users', async (req,res) => {
   //user registration
 // get user-registration page
 app.get('/user-registration', (req, res) => {
-    res.render('user-registration');
+    res.render('user-registration',
+        {
+            title: 'User Registration'
+        }
+    );
 });
 
 // POST to create new user
