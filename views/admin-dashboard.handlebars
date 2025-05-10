@@ -1,46 +1,46 @@
-<h1 class="admin-title">Admin Dashboard</h1>
+<h1 class="admin-title" role="heading" aria-level="1">Admin Dashboard</h1>
 
-<div class="admin-links">
-    <a href="/admin/users" class="dashboardbtn">Manage Users</a>
-    <a href="/admin/donations" class="dashboardbtn">Manage Donations</a>
+<div class="admin-links" role="navigation" aria-label="Admin Dashboard Navigation">
+    <a href="/admin/users" class="dashboardbtn" role="link" aria-label="Manage Users">Manage Users</a>
+    <a href="/admin/donations" class="dashboardbtn" role="link" aria-label="Manage Donations">Manage Donations</a>
 </div>
 
-<div class="dashboard-stats">
+<div class="dashboard-stats" role="region" aria-labelledby="dashboardStats" tabindex="0">
+    <h2 id="dashboardStats" class="sr-only">Dashboard Statistics</h2> <!-- Adding a hidden heading for screen readers -->
+
     <!-- Users Card -->
-    <div class="stat-card">
-        <div class="stat-icon">👥</div>
+    <div class="stat-card" role="article" aria-labelledby="usersCard">
+        <div class="stat-icon" aria-hidden="true">👥</div>
         <div class="stat-content">
-            <h3>Total Users</h3>
-            <p class="stat-number">{{stats.totalUsers}}</p>
+            <h3 id="usersCard">Total Users</h3>
+            <p class="stat-number" aria-live="polite">{{stats.totalUsers}}</p>
         </div>
     </div>
 
     <!-- Donations Card -->
-    <div class="stat-card">
-        <div class="stat-icon">🎁</div>
+    <div class="stat-card" role="article" aria-labelledby="donationsCard">
+        <div class="stat-icon" aria-hidden="true">🎁</div>
         <div class="stat-content">
-            <h3>Total Donations</h3>
-            <p class="stat-number">{{stats.totalDonations}}</p>
+            <h3 id="donationsCard">Total Donations</h3>
+            <p class="stat-number" aria-live="polite">{{stats.totalDonations}}</p>
         </div>
     </div>
 
     <!-- Available Donations -->
-    <div class="stat-card">
-        <div class="stat-icon">✅</div>
+    <div class="stat-card" role="article" aria-labelledby="availableDonationsCard">
+        <div class="stat-icon" aria-hidden="true">✅</div>
         <div class="stat-content">
-            <h3>Available Donations</h3>
-            <p class="stat-number">{{stats.availableDonations}}</p>
+            <h3 id="availableDonationsCard">Available Donations</h3>
+            <p class="stat-number" aria-live="polite">{{stats.availableDonations}}</p>
         </div>
     </div>
 
     <!-- Booked Donations -->
-    <div class="stat-card">
-        <div class="stat-icon">📦</div>
+    <div class="stat-card" role="article" aria-labelledby="bookedDonationsCard">
+        <div class="stat-icon" aria-hidden="true">📦</div>
         <div class="stat-content">
-            <h3>Booked Donations</h3>
-            <p class="stat-number">{{stats.bookedDonations}}</p>
+            <h3 id="bookedDonationsCard">Booked Donations</h3>
+            <p class="stat-number" aria-live="polite">{{stats.bookedDonations}}</p>
         </div>
     </div>
 </div>
-
-

@@ -342,7 +342,7 @@ button:focus {
 .navbar {
     display: flex;
     justify-content: space-between;
-    background-color: #e0f2f1; /* Lighter but darker background */
+    background-color: #e0f2f1;
     padding: 5px 30px;
     align-items: center;
     min-height: 40px;
@@ -353,10 +353,10 @@ button:focus {
   text-decoration: none;
   margin-right: 20px;
   font-weight: bold;
-  padding: 10px 12px; /* Add padding for height */
+  padding: 10px 12px;
   min-width: 44px;
   min-height: 44px;
-  display: inline-flex; /* Ensures box sizing includes padding */
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 }
@@ -1238,7 +1238,7 @@ button, .btn, .view-details-btn, .book-btn-card {
 }
 
 .dashboardbtn {
-  background-color: #4CAF50;
+  background-color: #045006;
   color: white;
   padding: 15px 30px;
   text-decoration: none;
