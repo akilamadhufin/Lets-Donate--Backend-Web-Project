@@ -301,17 +301,23 @@ input[type="file"] {
 .navbar {
     display: flex;
     justify-content: space-between;
-    background-color: #2a9d8f;
+    background-color: #e0f2f1; /* Lighter but darker background */
     padding: 5px 30px;
     align-items: center;
     min-height: 40px;
 }
 
 .navbar a {
-    color: white;
-    text-decoration: none;
-    margin-right: 20px;
-    font-weight: bold;
+  color: #00695c;
+  text-decoration: none;
+  margin-right: 20px;
+  font-weight: bold;
+  padding: 10px 12px; /* Add padding for height */
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex; /* Ensures box sizing includes padding */
+  align-items: center;
+  justify-content: center;
 }
 
 .navbar .btn {
@@ -635,6 +641,11 @@ input[type="file"] {
     color: #666;
     cursor: not-allowed;
     opacity: 0.7;
+}
+
+button, .btn, .view-details-btn, .book-btn-card {
+  min-width: 44px;
+  min-height: 44px;
 }
 
 /* search bar */
