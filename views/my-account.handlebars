@@ -4,24 +4,24 @@
   <div class="account-card">
     <dl class="account-info">
       <div class="info-row">
-        <dt>First Name:</dt>
-        <dd>{{user.firstname}}</dd>
+        <dt id="label-fn">First Name:</dt>
+        <dd aria-labelledby="label-fn">{{user.firstname}}</dd>
       </div>
       <div class="info-row">
-        <dt>Last Name:</dt>
-        <dd>{{user.lastname}}</dd>
+        <dt id="label-ln">Last Name:</dt>
+        <dd aria-labelledby="label-ln">{{user.lastname}}</dd>
       </div>
       <div class="info-row">
-        <dt>Email:</dt>
-        <dd>{{user.email}}</dd>
+        <dt id="label-email">Email:</dt>
+        <dd aria-labelledby="label-email">{{user.email}}</dd>
       </div>
       <div class="info-row">
-        <dt>Contact Number:</dt>
-        <dd>{{user.contactnumber}}</dd>
+        <dt id="label-contact">Contact Number:</dt>
+        <dd aria-labelledby="label-contact">{{user.contactnumber}}</dd>
       </div>
       <div class="info-row">
-        <dt>Address:</dt>
-        <dd>{{user.address}}</dd>
+        <dt id="label-address">Address:</dt>
+        <dd aria-labelledby="label-address">{{user.address}}</dd>
       </div>
     </dl>
 
@@ -29,7 +29,9 @@
       <a 
         href="/edituser-form/{{user._id}}" 
         class="btn edit-btn" 
-        aria-label="Edit your account information"
+        role="button"
+        tabindex="0"
+        aria-label="Edit account"
       >
         Edit Account
       </a>

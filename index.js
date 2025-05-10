@@ -100,6 +100,7 @@ mongoose.connect(dbURI)
 const User = require('./models/Users');
 const Donation = require('./models/Donations');
 const Cart = require('./models/Cart');
+const { title } = require('process');
 
 // passport configuration
 passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
@@ -322,6 +323,7 @@ app.get('/mydonations', async (req, res) => {
             delete req.session.donationSuccess;
 
             res.render('mydonations', {
+                title:'Donation List',
                 user: req.session.user,
                 donations: donations,
                 successMessage: successMessage,
@@ -346,7 +348,8 @@ app.get('/my-account', async (req, res) => {
             }
 
             res.render('my-account', {
-                user: user
+                user: user,
+                title: 'My Account'
             });
         } catch (error) {
             console.error(error);

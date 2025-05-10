@@ -704,10 +704,15 @@ button, .btn, .view-details-btn, .book-btn-card {
   }
 
 /* mydonations*/
-
 #my-donations {
     padding: 20px;
   }
+  .donation-title {
+    margin-left: 340px;
+    color: #2a9d8f;
+    margin-bottom: 20px;
+  }  
+
   
   .donations-list {
     display: grid;
@@ -782,8 +787,7 @@ button, .btn, .view-details-btn, .book-btn-card {
     margin: 5px 0;
   }
   
-  .update-btn,
-  .delete-btn {
+  .update-btn {
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -797,13 +801,25 @@ button, .btn, .view-details-btn, .book-btn-card {
   
   .delete-btn {
     background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 50px;
   }
   
-  .update-btn:hover,
+  .update-btn:hover {
+    opacity: 0.8;
+    outline: 2px solid #3e8e41;
+  }
+
   .delete-btn:hover {
     opacity: 0.8;
+    outline: 2px solid #711614;
   }
-  
   .popup-message {
     background-color: #4CAF50;
     color: white;
