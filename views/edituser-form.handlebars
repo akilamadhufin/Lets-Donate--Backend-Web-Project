@@ -1,38 +1,40 @@
-<h1>{{title}}</h1>
-<div class="edituser-container">
-    <h1>Update your account</h1>
-    <form action="/edituser/{{editUser._id}}?_method=PUT" method="post">
-        <!-- we use hidden method (since the form is using POST but we want to use PUT or PATCH) -->
+<h1 id="page-title">{{title}}</h1>
+<div class="edituser-container" role="region" aria-labelledby="page-title">
+    <h2>Update your account</h2>
+    <form action="/edituser/{{editUser._id}}?_method=PUT" method="post" aria-describedby="form-description">
         <input type="hidden" name="_method" value="PUT">
+
+        <p id="form-description" class="sr-only">Use this form to update your account information. All fields are required unless stated otherwise.</p>
 
         <div class="form-group">
             <label for="firstname">First Name</label>
-            <input type="text" id="firstname" name="firstname" value="{{editUser.firstname}}" required>
+            <input type="text" id="firstname" name="firstname" value="{{editUser.firstname}}" required aria-required="true">
         </div>
 
         <div class="form-group">
             <label for="lastname">Last Name</label>
-            <input type="text" id="lastname" name="lastname" value="{{editUser.lastname}}" required>
+            <input type="text" id="lastname" name="lastname" value="{{editUser.lastname}}" required aria-required="true">
         </div>
         
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="text" id="email" name="email" value="{{editUser.email}}" required>
+            <input type="email" id="email" name="email" value="{{editUser.email}}" required aria-required="true">
         </div>
 
         <div class="form-group">
             <label for="contactnumber">Contact Number</label>
-            <input type="text" id="contactnumber" name="contactnumber" value="{{editUser.contactnumber}}" required>
+            <input type="tel" id="contactnumber" name="contactnumber" value="{{editUser.contactnumber}}" required aria-required="true">
         </div>
 
         <div class="form-group">
             <label for="address">Address</label>
-            <input type="text" id="address" name="address" value="{{editUser.address}}" required>
+            <input type="text" id="address" name="address" value="{{editUser.address}}" required aria-required="true">
         </div>
 
         <div class="form-group">
-            <label for="password">New Password (leave blank to keep current)</label>
-            <input type="password" id="password" name="password" placeholder="Leave empty to keep current password">
+            <label for="password">New Password <span class="sr-only">(leave blank to keep current)</span></label>
+            <input type="password" id="password" name="password" placeholder="Leave empty to keep current password" aria-describedby="password-help">
+            <p id="password-help" class="sr-only">Leave this field empty if you don't want to change your password.</p>
         </div>
 
         <button type="submit" class="submit-btn">Update</button>
