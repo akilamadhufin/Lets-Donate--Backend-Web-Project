@@ -1,19 +1,24 @@
 <div class="donate-container">
     <h1>Donate an Item</h1>
-    <form action="/donate" method="POST" enctype="multipart/form-data">
+    <form action="/donate" method="POST" enctype="multipart/form-data" aria-labelledby="form-title">
+        <h2 id="form-title" class="sr-only">Donate an Item Form</h2> <!-- Hidden title for screen readers -->
+
+        <!-- Item Title -->
         <div class="form-group">
             <label for="title">Item Title</label>
-            <input type="text" id="title" name="title" required>
+            <input type="text" id="title" name="title" required aria-required="true" placeholder="Enter the title of the item" />
         </div>
 
+        <!-- Item Description -->
         <div class="form-group">
             <label for="description">Item Description</label>
-            <input type="text" id="description" name="description" required>
+            <input type="text" id="description" name="description" required aria-required="true" placeholder="Provide a short description of the item" />
         </div>
 
+        <!-- Category Dropdown -->
         <div class="form-group">
             <label for="category">Category</label>
-            <select id="category" name="category" required>
+            <select id="category" name="category" required aria-required="true" aria-describedby="category-help">
                 <option value="">-- Select Category --</option>
                 <option value="Clothing">Clothing</option>
                 <option value="Books">Books</option>
@@ -22,18 +27,23 @@
                 <option value="Toys">Toys</option>
                 <option value="Others">Others</option>
             </select>
+            <small id="category-help" class="form-text">Select the category that best matches the item you are donating.</small>
         </div>
 
+        <!-- Pickup Location -->
         <div class="form-group">
             <label for="pickupLocation">Pickup Location</label>
-            <input type="text" id="pickupLocation" name="pickupLocation" required>
+            <input type="text" id="pickupLocation" name="pickupLocation" required aria-required="true" placeholder="Enter the pickup location" />
         </div>
 
+        <!-- Image Upload -->
         <div class="form-group">
             <label for="image">Upload Image</label>
-            <input type="file" id="image" name="image" accept="image/*">
+            <input type="file" id="image" name="image" accept="image/*" aria-describedby="image-help" />
+            <small id="image-help" class="form-text">Upload a clear image of the item you are donating.</small>
         </div>
 
-        <button type="submit" class="submit-btn">Submit Donation</button>
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn" aria-label="Submit Donation">Submit Donation</button>
     </form>
 </div>
