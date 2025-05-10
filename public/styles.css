@@ -788,7 +788,7 @@ button, .btn, .view-details-btn, .book-btn-card {
   }
   
   .update-btn {
-    background-color: #4CAF50;
+    background-color: #034303;
     color: white;
     border: none;
     padding: 10px;
@@ -800,7 +800,7 @@ button, .btn, .view-details-btn, .book-btn-card {
   }
   
   .delete-btn {
-    background-color: #f44336;
+    background-color:#a50000;
     color: white;
     border: none;
     padding: 10px;
@@ -818,7 +818,7 @@ button, .btn, .view-details-btn, .book-btn-card {
 
   .delete-btn:hover {
     opacity: 0.8;
-    outline: 2px solid #711614;
+    outline: 2px solid #da110e;
   }
   .popup-message {
     background-color: #4CAF50;
