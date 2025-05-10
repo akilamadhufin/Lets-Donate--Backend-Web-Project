@@ -1045,7 +1045,7 @@ button, .btn, .view-details-btn, .book-btn-card {
   }
   
   .adminuser-table thead {
-    background-color: #2a9d8f;
+    background-color: #03472a;
   }
   
   .adminuser-table th {
@@ -1064,12 +1064,12 @@ button, .btn, .view-details-btn, .book-btn-card {
   }
   
   .btn-edit {
-    background-color: #2a9d8f;
+    background-color: #03472a;
     color: white;
   }
   
   .btn-delete {
-    background-color: #c0392b;
+    background-color: #781408;
     color: white;
   }
   
