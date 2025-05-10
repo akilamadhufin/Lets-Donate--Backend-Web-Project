@@ -1,30 +1,30 @@
-<div class="adminuseredit-container">
-  <h1 class="adminuseredit-title">Edit User</h1>
-  
+<div class="adminuseredit-container" role="region" aria-labelledby="edit-user-title">
+  <h1 id="edit-user-title" class="adminuseredit-title">Edit User</h1>
+
   <form action="/admin/users/{{user._id}}/update" method="POST" class="edit-form">
     <div class="form-group">
-      <label for="firstname">First Name:</label>
-      <input type="text" id="firstname" name="firstname" value="{{user.firstname}}" required />
+      <label for="firstname">First Name:<span aria-hidden="true">*</span></label>
+      <input type="text" id="firstname" name="firstname" value="{{user.firstname}}" required aria-required="true" autocomplete="given-name" />
     </div>
 
     <div class="form-group">
-      <label for="lastname">Last Name:</label>
-      <input type="text" id="lastname" name="lastname" value="{{user.lastname}}" required />
+      <label for="lastname">Last Name:<span aria-hidden="true">*</span></label>
+      <input type="text" id="lastname" name="lastname" value="{{user.lastname}}" required aria-required="true" autocomplete="family-name" />
     </div>
 
     <div class="form-group">
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" value="{{user.email}}" required />
+      <label for="email">Email:<span aria-hidden="true">*</span></label>
+      <input type="email" id="email" name="email" value="{{user.email}}" required aria-required="true" autocomplete="email" />
     </div>
 
     <div class="form-group">
       <label for="contactnumber">Contact Number:</label>
-      <input type="text" id="contactnumber" name="contactnumber" value="{{user.contactnumber}}" />
+      <input type="tel" id="contactnumber" name="contactnumber" value="{{user.contactnumber}}" autocomplete="tel" />
     </div>
 
     <div class="form-group">
       <label for="address">Address:</label>
-      <textarea id="address" name="address" rows="4">{{user.address}}</textarea>
+      <textarea id="address" name="address" rows="4" autocomplete="street-address">{{user.address}}</textarea>
     </div>
 
     <div class="form-group">
@@ -35,6 +35,6 @@
       </select>
     </div>
 
-    <button type="submit" class="submit-btn">Save Changes</button>
+    <button type="submit" class="submit-btn" aria-label="Save Changes to User">Save Changes</button>
   </form>
 </div>
