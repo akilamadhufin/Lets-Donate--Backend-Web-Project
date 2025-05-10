@@ -591,7 +591,7 @@ app.delete('/cart/:id', async (req, res) => {
         // Remove the cart entry
         await Cart.findOneAndDelete({
             userId: req.session.user._id,
-            itemId: req.params.id // Changed from itemId to params.id
+            itemId: req.params.id 
         });
 
         // Update donation availability
