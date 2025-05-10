@@ -1,29 +1,37 @@
 <main>
-    <div class="login-container">
+    <section class="login-container">
         {{#if loggedInUser}}
             <h1>Welcome, {{loggedInUser}}!</h1>
         {{else}}
             <h1>Login to Your Account</h1>
             {{#if error}}
-                <p style="color: red;">{{error}}</p>
+                <div role="alert" aria-live="assertive">
+                    <p style="color: red;">{{error}}</p>
+                </div>
             {{/if}}
-            <form action="/login" method="post">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
+            <form action="/login" method="post" aria-labelledby="login-form">
+                <fieldset>
+                    <legend id="login-form">Login Form</legend>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required aria-required="true" aria-describedby="email-help">
+                        <div id="email-help" class="form-text">Enter your email address.</div>
+                    </div>
 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required aria-required="true" aria-describedby="password-help">
+                        <div id="password-help" class="form-text">Enter your password.</div>
+                    </div>
 
-                <button type="submit" class="login-btn">Login</button>
+                    <button type="submit" class="login-btn" aria-label="Login to your account">Login</button>
+                </fieldset>
             </form>
 
             <div class="register-link">
-                <p>Don't have an account? <a href="/user-registration" class="register-btn">Register here</a></p>
+                <p>Don't have an account? <a href="/user-registration" class="register-btn" aria-label="Register here">Register here</a></p>
             </div>
         {{/if}}
-    </div>
+    </section>
 </main>
