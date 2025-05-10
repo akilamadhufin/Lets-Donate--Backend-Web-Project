@@ -1,19 +1,20 @@
-<section class="admindonate-section">
+<section class="admindonate-section" aria-label="Manage Donations Section">
   <h1 class="admindonate-title">Manage Donations</h1>
 
   <div class="admindonatetable-container">
     <table class="admindonate-table">
+      <caption class="sr-only">This table lists all donations and allows administrators to manage them.</caption>
       <thead>
         <tr>
-          <th>Title</th>
-          <th>Image</th>
-          <th>Category</th>
-          <th>Location</th>
-          <th>Published Date</th>
-          <th>Status</th>
-          <th>Donor</th>
-          <th>Booked By</th>
-          <th>Actions</th>
+          <th scope="col">Title</th>
+          <th scope="col">Image</th>
+          <th scope="col">Category</th>
+          <th scope="col">Location</th>
+          <th scope="col">Published Date</th>
+          <th scope="col">Status</th>
+          <th scope="col">Donor</th>
+          <th scope="col">Booked By</th>
+          <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -22,35 +23,45 @@
           <td class="table-cell">{{title}}</td>
           <td class="table-cell">
             {{#if image}}
-            <img src="{{image}}" alt="{{title}}" class="donation-image">
+            <img src="{{image}}" alt="Donation image for {{title}}" class="donation-image">
             {{else}}
-            No Image
+            <span>No Image</span>
             {{/if}}
           </td>
           <td class="table-cell">{{category}}</td>
           <td class="table-cell">{{pickupLocation}}</td>
           <td class="table-cell">{{formatDate publishedDate}}</td>
           <td class="table-cell">
-            {{#if available}}<span class="status available">Available</span>{{else}}<span class="status booked">Booked</span>{{/if}}
+            {{#if available}}
+              <span class="status available">Available</span>
+            {{else}}
+              <span class="status booked">Booked</span>
+            {{/if}}
           </td>
           <td class="table-cell">
             {{#if userId}}
             <span class="user-name">{{userId.firstname}} {{userId.lastname}}</span>
             {{else}}
-            <span class="deleted-user">[Deleted User]</span>
+            <span>[Deleted User]</span>
             {{/if}}
           </td>
           <td class="table-cell">
             {{#if bookedBy}}
             <span class="user-name">{{bookedBy.firstname}} {{bookedBy.lastname}}</span>
             {{else}}
-            <span class="no-booked-user">-</span>
+            <span>-</span>
             {{/if}}
           </td>
           <td class="table-cell">
             <form action="/admin/donations/{{_id}}?_method=DELETE" method="POST">
-              <button type="submit" class="btn btn-danger" onclick="return confirm('Permanently delete this donation?')">
-                <i class="fas fa-trash-alt"></i> Delete
+              <button 
+                type="submit" 
+                class="btn btn-danger" 
+                onclick="return confirm('Permanently delete this donation?')" 
+                aria-label="Delete donation titled {{title}}"
+              >
+                <i class="fas fa-trash-alt" aria-hidden="true"></i> 
+                Delete
               </button>
             </form>
           </td>

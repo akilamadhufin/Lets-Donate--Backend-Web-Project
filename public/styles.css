@@ -1132,7 +1132,7 @@ button, .btn, .view-details-btn, .book-btn-card {
   }
   
   .admindonate-table th {
-    background-color: #2a9d8f;
+    background-color:  #03472a;
     color: #fff;
     table-layout: fixed;
   }
@@ -1156,12 +1156,12 @@ button, .btn, .view-details-btn, .book-btn-card {
   }
   
   .status.available {
-    background-color: #28a745;
+    background-color:  #03472a;
     color: white;
   }
   
   .status.booked {
-    background-color: #dc3545;
+    background-color: #781408;
     color: white;
   }
   
@@ -1184,7 +1184,7 @@ button, .btn, .view-details-btn, .book-btn-card {
   }
   
   .btn-danger {
-    background-color: #dc3545;
+    background-color: #781408;
     color: white;
   }
   
