@@ -16,7 +16,7 @@ body {
 
 /* Footer Styles */
 .footer {
-    background-color: #2a9d8f;
+    background-color:#034303;
     color: white;
     padding: 20px 0;
     text-align: center;
@@ -27,6 +27,7 @@ body {
 .footer p {
     margin: 0;
     font-weight: bold;
+    line-height: 1.5;
 }
 
 
@@ -37,7 +38,7 @@ h1 {
 }
 
 h2 {
-    color: #2a9d8f;
+    color: #0d5c27;
     margin-bottom: 20px;
 }
 
@@ -338,6 +339,11 @@ button:focus {
     background-color: #2980b9;
   }
 
+message-btn{
+background-color: #034303;;
+
+}  
+
 /* Navbar Styles */
 .navbar {
     display: flex;
@@ -362,15 +368,42 @@ button:focus {
 }
 
 .navbar .btn {
-    background-color: #fff;
-    color: #2a9d8f;
+    background-color: #034303;
+    color: #ffffff;
     padding: 6px 14px;
     border: 2px solid #2a9d8f;
     border-radius: 5px;
     font-weight: bold;
+    margin-right: 5px;
     transition: background-color 0.3s, color 0.3s;
+    min-height: 44px;
+    padding: 10px 12px; 
+    box-sizing: border-box;
 }
 
+.navbar button.btn {
+  background-color: #034303;
+  color: #ffffff;
+  padding: 6px 14px;
+  border: 2px solid #2a9d8f;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px; 
+}
+.navbar button.btn:focus {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
+}
 .navbar .btn:hover {
     background-color: #e0e0e0;
     color: #2a9d8f;
@@ -393,6 +426,7 @@ button:focus {
     text-decoration: none;
     transition: background-color 0.3s, color 0.3s;
     display: inline-block;
+    
 }
 
 .dropdown > a:hover {
@@ -400,6 +434,12 @@ button:focus {
     color: #2a9d8f;
 }
 
+.dropdown-content[hidden] {
+  display: none;
+}
+.dropdown-content:not([hidden]) {
+  display: block;
+}
 .dropdown-content {
     display: none;
     position: absolute;
@@ -410,11 +450,15 @@ button:focus {
     overflow: hidden;
     z-index: 1;
 }
-
-.dropdown:hover .dropdown-content {
-    display: block;
+.btn:focus, 
+.dropdown-content a:focus {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
 }
 
+.btn:focus:not(:focus-visible) {
+  outline: none;
+}
 .dropdown-content a {
     color: #2a9d8f;
     padding: 10px 15px;
@@ -489,7 +533,7 @@ button:focus {
 .login-btn {
     width: 30%;
     padding: 14px;
-    background-color: #2a9d8f;
+    background-color: #034303;
     border: none;
     border-radius: 8px;
     font-size: 16px;
@@ -510,8 +554,10 @@ button:focus {
 }
 
 .register-btn {
-    color:#2a9d8f;
+    color:#ffffff;
+    background-color: #00695c;
     text-decoration: none;
+    line-height: 1.5;
 }
 
 .register-btn:hover {
@@ -649,7 +695,7 @@ legend {
     margin-top: 15px;
     padding: 12px 20px;
     max-width: 300px;
-    background: #2a9d8f;
+    background: #034303;
     color: white;
     border: none;
     border-radius: 8px;
@@ -686,7 +732,7 @@ legend {
 /* Book Button */
 .book-btn-card,
 #book-btn {
-    background-color: #2a9d8f;
+    background-color:#034303;
     color: white;
     font-size: 1.2rem;
     padding: 15px;
@@ -713,8 +759,11 @@ legend {
 button, .btn, .view-details-btn, .book-btn-card {
   min-width: 44px;
   min-height: 44px;
+  cursor: pointer;
 }
-
+#unavailable-btn {
+  cursor: not-allowed;
+}
 /* search bar */
 .search-bar {
     margin: 20px 0;
@@ -795,7 +844,9 @@ button, .btn, .view-details-btn, .book-btn-card {
     max-height: 100%;            
     overflow-y: auto;            
   }
-  
+  .donation-details p {
+    line-height: 1.5;
+  }
   .item-name h3 {
     margin: 0;
     font-size: 1.2em;
@@ -980,14 +1031,17 @@ button, .btn, .view-details-btn, .book-btn-card {
 }
 
 .btn.edit-btn {
-    padding: 10px 20px;
-    background-color: #2a9d8f;
-    border: none;
-    color: white;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 15px 25px;
+  background-color: #034303;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+
 }
 
 .btn.edit-btn:hover {
@@ -1228,6 +1282,7 @@ button, .btn, .view-details-btn, .book-btn-card {
     margin: 0;
     font-weight: bold;
     color: #333;
+    line-height: 1.5;
 }
 
 .admin-links {

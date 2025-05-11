@@ -31,10 +31,17 @@
                         <a href="/my-account" class="btn" aria-label="Hi Admin {{user.firstname}}!"><span>Hi Admin {{user.firstname}}!</span></a>
                         <a href="/admin" class="btn" aria-label="Admin Dashboard">Dashboard</a>
                         <div class="dropdown">
-                            <button class="btn" aria-haspopup="true" aria-expanded="false" id="dropdown-my-activity" aria-label="My Activity">
-                                My Activity <span class="dropdown-icon">▼</span>
+                            <button class="btn"
+                                    id="dropdown-my-activity"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                    aria-controls="my-activity-dropdown"
+                                    tabindex="0">
+                                    
+                            My Activity <span class="dropdown-icon">▼</span>
                             </button>
-                            <div class="dropdown-content">
+
+                            <div class="dropdown-content" id="my-activity-dropdown">
                                 <a href="/admin/users" aria-label="Manage Users">Manage User</a>
                                 <a href="/admin/donations" aria-label="Manage Donations">Manage Donation</a>
                                 <a href="/logout" aria-label="Logout">Logout</a>
@@ -43,10 +50,16 @@
                     {{else}}
                         <a href="/my-account" class="btn" aria-label="Hi {{user.firstname}}!"><span>Hi {{user.firstname}}!</span></a>
                         <div class="dropdown">
-                            <button class="btn" aria-haspopup="true" aria-expanded="false" id="dropdown-my-activity" aria-label="My Activity">
-                                My Activity <span class="dropdown-icon">▼</span>
+                            <button class="btn"
+                                    id="dropdown-my-activity"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                    
+                                    tabindex="0">
+                            My Activity <span class="dropdown-icon">▼</span>
                             </button>
-                            <div class="dropdown-content">
+
+                            <div class="dropdown-content" id="my-activity-dropdown">
                                 <a href="/mydonations" aria-label="View My Donations">My Donations</a>
                                 <a href="/mycart" aria-label="View My Basket">My Bucket</a>
                                 <a href="/messages" aria-label="View Messages">Messages</a>

@@ -465,6 +465,7 @@ app.get('/edituser-form/:id', async (req, res) => {
         }
 
         res.render('edituser-form', {
+            title: 'Edit Account',
             user: req.session.user,
             editUser: user.toJSON()
         });

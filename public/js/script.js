@@ -124,4 +124,72 @@ searchInput.addEventListener('input', () => {
       card.style.display = matches ? 'block' : 'none';
     });
   });
+
+  // keybaord nav
+  const dropdownBtn = document.getElementById('dropdown-my-activity');
+  const dropdownMenu = document.getElementById('my-activity-dropdown');
+  let dropdownLinks = [];
+
+  // Toggle dropdown visibility
+  const toggleDropdown = (open) => {
+      const isOpen = open ?? dropdownBtn.getAttribute('aria-expanded') === 'false';
+      dropdownBtn.setAttribute('aria-expanded', isOpen);
+      dropdownMenu.hidden = !isOpen;
+
+      if (isOpen) {
+          dropdownLinks = dropdownMenu.querySelectorAll('a');
+          dropdownLinks[0]?.focus(); // Focus first item when opening
+      }
+  };
+
+  // Click handler
+  dropdownBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleDropdown();
   });
+
+  // Keyboard handler
+  dropdownBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleDropdown(true);
+      } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          toggleDropdown(true);
+      }
+  });
+
+  // Dropdown menu keyboard navigation
+  dropdownMenu.addEventListener('keydown', (e) => {
+      const currentIndex = Array.from(dropdownLinks).indexOf(document.activeElement);
+      
+      switch(e.key) {
+          case 'ArrowDown':
+              e.preventDefault();
+              const nextIndex = (currentIndex + 1) % dropdownLinks.length;
+              dropdownLinks[nextIndex].focus();
+              break;
+              
+          case 'ArrowUp':
+              e.preventDefault();
+              const prevIndex = (currentIndex - 1 + dropdownLinks.length) % dropdownLinks.length;
+              dropdownLinks[prevIndex].focus();
+              break;
+              
+          case 'Escape':
+              toggleDropdown(false);
+              dropdownBtn.focus();
+              break;
+      }
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', (e) => {
+      if (!dropdownBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+          toggleDropdown(false);
+      }
+  });
+});
+
+
+  
