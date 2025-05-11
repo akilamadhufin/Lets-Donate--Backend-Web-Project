@@ -1,32 +1,40 @@
-<div class="account-wrapper">
-    <h1 class="page-title">My Account</h1>
+<section class="account-wrapper" role="region" aria-labelledby="account-title">
+  <h1 id="account-title" class="page-title">My Account</h1>
 
-    <div class="account-card">
-        <div class="account-info">
-            <div class="info-row">
-                <label>First Name:</label>
-                <span>{{user.firstname}}</span>
-            </div>
-            <div class="info-row">
-                <label>Last Name:</label>
-                <span>{{user.lastname}}</span>
-            </div>
-            <div class="info-row">
-                <label>Email:</label>
-                <span>{{user.email}}</span>
-            </div>
-            <div class="info-row">
-                <label>Contact Number:</label>
-                <span>{{user.contactnumber}}</span>
-            </div>
-            <div class="info-row">
-                <label>Address:</label>
-                <span>{{user.address}}</span>
-            </div>
-        </div>
+  <div class="account-card">
+    <dl class="account-info">
+      <div class="info-row">
+        <dt id="label-fn">First Name:</dt>
+        <dd aria-labelledby="label-fn">{{user.firstname}}</dd>
+      </div>
+      <div class="info-row">
+        <dt id="label-ln">Last Name:</dt>
+        <dd aria-labelledby="label-ln">{{user.lastname}}</dd>
+      </div>
+      <div class="info-row">
+        <dt id="label-email">Email:</dt>
+        <dd aria-labelledby="label-email">{{user.email}}</dd>
+      </div>
+      <div class="info-row">
+        <dt id="label-contact">Contact Number:</dt>
+        <dd aria-labelledby="label-contact">{{user.contactnumber}}</dd>
+      </div>
+      <div class="info-row">
+        <dt id="label-address">Address:</dt>
+        <dd aria-labelledby="label-address">{{user.address}}</dd>
+      </div>
+    </dl>
 
-        <div class="account-actions">
-            <a href="/edituser-form/{{user._id}}" class="btn edit-btn">Edit Account</a>
-        </div>
+    <div class="account-actions">
+      <a 
+        href="/edituser-form/{{user._id}}" 
+        class="btn edit-btn" 
+        role="button"
+        tabindex="0"
+        aria-label="Edit account"
+      >
+        Edit Account
+      </a>
     </div>
-</div>
+  </div>
+</section>

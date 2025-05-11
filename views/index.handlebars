@@ -1,15 +1,26 @@
- <main>
-        {{{body}}}
-        <section id="all-items" class="section">
-            <h2>All Donated Items</h2>
+<main aria-labelledby="main-heading">
+    {{body}}
+    <h1 id="main-heading" tabindex="-1">Welcome to Our Donation Platform</h1>
+    
+    <section id="all-items" 
+             class="section" 
+             role="region" 
+             aria-labelledby="section-title"
+             aria-describedby="section-description">
+        <h2 id="section-title">All Donated Items</h2>
+        <p id="section-description" class="sr-only">
+            Browse through donated items available for pickup
+        </p>
+
         <div class="search-bar">
-            <input type="text" id="search-input" placeholder="Search by title, category, or location">
-            <span class="search-icon">&#128269;</span>
+            <label for="search-input" class="sr-only">Search items</label>
+            <input type="text" id="search-input" placeholder="Search by title, category, or location" aria-label="Search items by title, category or location">
+            <span class="search-icon" aria-hidden="true">&#128269;</span>
         </div>
 
-        <div class="items-grid">
+        <div class="items-grid" role="list" aria-label="List of donated items">
             {{#each allItems}}
-            <div class="item-card"
+            <article class="item-card"
                 data-id="{{this._id}}"
                 data-title="{{this.title}}"
                 data-description="{{this.description}}"
@@ -18,53 +29,66 @@
                 data-date="{{this.publishedDate}}"
                 data-image="{{this.image}}"
                 data-user="{{this.userEmail}}"
-                data-available="{{this.available}}">
+                data-available="{{this.available}}"
+                role="listitem"
+                aria-labelledby="item-title-{{@index}}"
+                aria-describedby="item-pickup-{{@index}} item-available-{{@index}}"
+                tabindex="0"
+            >
+
 
                 {{#if this.image}}
                 <img src="http://localhost:3000/{{this.image}}" alt="{{this.title}}" class="item-image">
                 {{/if}}
-                <h3>{{this.title}}</h3>
+
+                <h3 id="item-title-{{@index}}">{{this.title}}</h3>
                 <p><strong>Pickup:</strong> {{this.pickupLocation}}</p>
                 <p><strong>Available:</strong> {{#if this.available}}Yes{{else}}No{{/if}}</p>
-                <button type="submit" class="view-btn-card">View details</button>
+
+                <button type="button" class="view-btn-card" aria-haspopup="dialog" aria-controls="item-modal">View details</button>
+
                 {{#if this.available}}
                     <form action="/book/{{this._id}}" method="POST">
                         <button type="submit" class="book-btn-card">Book Item</button>
                     </form>
                 {{else}}
-                    <button class="book-btn-card" type="button" disabled>Book Item</button>
+                    <button class="book-btn-card" type="button" disabled aria-disabled="true">Book Item</button>
                 {{/if}}
-            </div>
+
+            </article>
             {{/each}}
         </div>
 
         <!-- Modal -->
-        <div id="item-modal" class="modal hidden">
+        <div id="item-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description modal-category modal-address modal-date modal-available" tabindex="-1">
             <div class="modal-content">
-                <span class="close-btn">&times;</span>
+                <button class="close-btn" aria-label="Close modal">&times;</button>
+
                 <div class="modal-body">
-                    <img id="modal-image" />
+                    <img id="modal-image" alt="Selected item image" tabindex="-1" />
                     <div class="modal-info">
-                        <h3 id="modal-title"></h3>
-                        <p id="modal-description"></p>
+                        <h3 id="modal-title">Item Title</h3>
+                        <p id="modal-description">Item description</p>
                         <p><strong>Category:</strong> <span id="modal-category"></span></p>
                         <p><strong>Address:</strong> <span id="modal-address"></span></p>
-                        <div id="map"></div>
+                        <div id="map" role="region" aria-label="Pickup location on map" tabindex="-1"></div>
                         <p><strong>Published:</strong> <span id="modal-date"></span></p>
                         <p><strong>Available:</strong> <span id="modal-available"></span></p>
-                        <textarea id="message-box" placeholder="Write a message to the donor..."></textarea>
-                        <button id="send-message-btn">Send Message</button>
+
+                        <label for="message-box">Message to the donor</label>
+                        <textarea id="message-box" placeholder="Write a message to the donor..." aria-label="Message to the donor"></textarea>
+
+                        <button id="send-message-btn" class="message-btn">Send Message</button>
 
                         <!-- Book Item Button in Modal -->
                         <form method="POST" id="book-form" style="display: none;">
                             <button id="book-item-btn" type="submit">Book Item</button>
                         </form>
-                        <button id="unavailable-btn" style="display: none;" disabled>Item Unavailable</button>
+
+                        <button id="unavailable-btn" style="display: none;" disabled aria-disabled="true">Item Unavailable</button>
                     </div>
                 </div>
             </div>
         </div>
-
-        </section>
-
-    </main>
+    </section>
+</main>

@@ -1,17 +1,22 @@
 <h1>My Booked Items</h1>
 
-<section id="my-donations" class="section">
-  <div class="donations-list">
+<section id="my-donations" class="section" role="region" aria-labelledby="my-donations-title">
+  <h2 id="my-donations-title" class="sr-only">My Booked Items</h2>
+  <div class="donations-list" role="list">
     {{#each bookings}}
-    <div class="donation-card">
+    <div class="donation-card" role="listitem">
       
       <div class="donation-image-container">
         {{#if this.itemId.image}}
-          <img src="http://localhost:3000/{{this.itemId.image}}" alt="Booked Item" class="donation-image">
+          <img src="http://localhost:3000/{{this.itemId.image}}" alt="Image of booked item: {{this.itemId.name}}" class="donation-image">
         {{/if}}
       </div>
 
       <div class="donation-details">
+        <div class="item-title">
+          <p><strong>Item Title:</strong> {{this.itemId.title}}</p>
+        </div>
+
         <div class="location">
           <p><strong>Pickup Location:</strong> {{this.itemId.pickupLocation}}</p>
         </div>
@@ -19,17 +24,17 @@
           <p><strong>Availability:</strong> {{#if this.itemId.available}}Available{{else}}Taken{{/if}}</p>
         </div>
       </div>
-
-
-        <form action="/cart/{{this.itemId._id}}?_method=DELETE" method="POST" onsubmit="return confirm('Remove this item from your cart?');">
-        <button type="submit" class="delete-btn">Remove</button>
-        </form>
+      <div>
+      <form action="/cart/{{this.itemId._id}}?_method=DELETE" method="POST" onsubmit="return confirm('Remove this item from your cart?');">
+        <button type="submit" class="delete-btn" aria-label="Remove booked item from cart">Remove</button>
+      </form>
+      </div>
 
     </div>
     {{/each}}
 
     {{#unless bookings.length}}
-    <p class="empty-cart">Your cart is empty</p>
+    <p class="empty-cart" aria-live="assertive">Your cart is empty</p>
     {{/unless}}
 
   </div>

@@ -10,62 +10,89 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-left">
-            {{#if user}}
-                {{#unless user.isAdmin}}
-                    <a href="/">Home</a>
-                    <a href="/about-us">About Us</a>
-                    <a href="/donate-form">I want to Donate</a>
-                {{/unless}}
-            {{else}}
-                <a href="/">Home</a>
-                <a href="/about-us">About Us</a>
-                <a href="/donate-form">I want to Donate</a>
-            {{/if}}
-
-        </div>
-        <div class="nav-right">
-            {{#if user}}
-    {{#if user.isAdmin}}
-        <a href="/my-account" class="btn"><span>Hi Admin {{user.firstname}}!</span></a>
-        <a href="/admin" class="btn"><span>Dashboard</span></a>
-        <div class="dropdown">
-            <a href="#" class="btn">My Activity <span class="dropdown-icon">▼</span></a>
-            <div class="dropdown-content">
-                <a href="/admin/users">Manage User</a>
-                <a href="/admin/donations">Manage Donation</a>
-                <a href="/logout">Logout</a>
+    <header>
+        <nav class="navbar" role="navigation" aria-label="Main Navigation">
+            <div class="nav-left">
+                {{#if user}}
+                    {{#unless user.isAdmin}}
+                        <a href="/" aria-label="Home">Home</a>
+                        <a href="/about-us" aria-label="About Us">About Us</a>
+                        <a href="/donate-form" aria-label="I want to Donate">I want to Donate</a>
+                    {{/unless}}
+                {{else}}
+                    <a href="/" aria-label="Home">Home</a>
+                    <a href="/about-us" aria-label="About Us">About Us</a>
+                    <a href="/donate-form" aria-label="I want to Donate">I want to Donate</a>
+                {{/if}}
             </div>
-        </div>
-    {{else}}
-        <a href="/my-account" class="btn"><span>Hi {{user.firstname}}!</span></a>
-        <div class="dropdown">
-            <a href="#" class="btn">My Activity <span class="dropdown-icon">▼</span></a>
-            <div class="dropdown-content">
-                <a href="/mydonations">My Donations</a>
-                <a href="/mycart">My Bucket</a>
-                <a href="/messages">Messages</a>
-                <a href="/my-account">My Account</a>               
-                <a href="/logout">Logout</a>
-            </div>
-        </div>
-        <a href="/mycart" class="btn"><i class="fas fa-shopping-basket"></i></a>
-    {{/if}}
-            {{else}}
-                <a href="/basket" class="btn">Basket</a>
-                <a href="/login" class="btn">Sign In</a>
-            {{/if}}
-        </div>
-    </nav>
-    {{{body}}}
+            <div class="nav-right">
+                {{#if user}}
+                    {{#if user.isAdmin}}
+                        <a href="/my-account" class="btn" aria-label="Hi Admin {{user.firstname}}!"><span>Hi Admin {{user.firstname}}!</span></a>
+                        <a href="/admin" class="btn" aria-label="Admin Dashboard">Dashboard</a>
+                        <div class="dropdown">
+                            <button class="btn"
+                                    id="dropdown-my-activity"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                    aria-controls="my-activity-dropdown"
+                                    tabindex="0"
+                                    role="button"
+                                    aria-label="Open My Activity menu">                                    
+                            My Activity <span class="dropdown-icon">▼</span>
+                            </button>
 
-            <!-- Footer Section -->
-<footer class="footer">
-    <div class="footer-content">
-        <p>&copy; 2025 HAMK-CA-group 18. All rights reserved.</p>
-    </div>
-</footer>
+                            <div class="dropdown-content" id="my-activity-dropdown">
+                                <a href="/admin/users" aria-label="Manage Users">Manage User</a>
+                                <a href="/admin/donations" aria-label="Manage Donations">Manage Donation</a>
+                                <a href="/logout" aria-label="Logout">Logout</a>
+                            </div>
+                        </div>
+                    {{else}}
+                        <a href="/my-account" class="btn" aria-label="Hi {{user.firstname}}!"><span>Hi {{user.firstname}}!</span></a>
+                        <!-- Update the dropdown structure in your navbar -->
+                        <div class="dropdown">
+                            <button class="btn"
+                                    id="dropdown-my-activity"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                    aria-controls="my-activity-dropdown"
+                                    tabindex="0"
+                                    role="button"
+                                    aria-label="Open My Activity menu">
+                                My Activity <span class="dropdown-icon" aria-hidden="true">▼</span>
+                            </button>
+
+                            <div class="dropdown-content" 
+                                id="my-activity-dropdown"
+                                role="menu"
+                                aria-labelledby="dropdown-my-activity"
+                                hidden>
+                            <a href="/mydonations" role="menuitem" tabindex="-1">My Donations</a>
+                            <a href="/mycart" role="menuitem" tabindex="-1">My Bucket</a>
+                            <a href="/messages" role="menuitem" tabindex="-1">Messages</a>
+                            <a href="/my-account" role="menuitem" tabindex="-1">My Account</a>
+                            <a href="/logout" role="menuitem" tabindex="-1">Logout</a>
+                            </div>
+                        </div>
+                        <a href="/mycart" class="btn" aria-label="View Basket"><i class="fas fa-shopping-basket"></i></a>
+                    {{/if}}
+                {{else}}
+                    <a href="/basket" class="btn" aria-label="View Basket">Basket</a>
+                    <a href="/login" class="btn" aria-label="Sign In">Sign In</a>
+                {{/if}}
+            </div>
+        </nav>
+    </header>
+    <main>
+        {{{body}}}
+    </main>
+    <!-- Footer Section -->
+    <footer class="footer" role="contentinfo">
+        <div class="footer-content">
+            <p>&copy; 2025 HAMK-CA-group 18. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="/js/script.js"></script>
 </body>
 </html>
-<script src="/js/script.js"></script>
