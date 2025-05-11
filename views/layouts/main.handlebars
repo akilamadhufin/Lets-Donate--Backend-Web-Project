@@ -36,8 +36,9 @@
                                     aria-haspopup="true"
                                     aria-expanded="false"
                                     aria-controls="my-activity-dropdown"
-                                    tabindex="0">
-                                    
+                                    tabindex="0"
+                                    role="button"
+                                    aria-label="Open My Activity menu">                                    
                             My Activity <span class="dropdown-icon">▼</span>
                             </button>
 
@@ -49,22 +50,29 @@
                         </div>
                     {{else}}
                         <a href="/my-account" class="btn" aria-label="Hi {{user.firstname}}!"><span>Hi {{user.firstname}}!</span></a>
+                        <!-- Update the dropdown structure in your navbar -->
                         <div class="dropdown">
                             <button class="btn"
                                     id="dropdown-my-activity"
                                     aria-haspopup="true"
                                     aria-expanded="false"
-                                    
-                                    tabindex="0">
-                            My Activity <span class="dropdown-icon">▼</span>
+                                    aria-controls="my-activity-dropdown"
+                                    tabindex="0"
+                                    role="button"
+                                    aria-label="Open My Activity menu">
+                                My Activity <span class="dropdown-icon" aria-hidden="true">▼</span>
                             </button>
 
-                            <div class="dropdown-content" id="my-activity-dropdown">
-                                <a href="/mydonations" aria-label="View My Donations">My Donations</a>
-                                <a href="/mycart" aria-label="View My Basket">My Bucket</a>
-                                <a href="/messages" aria-label="View Messages">Messages</a>
-                                <a href="/my-account" aria-label="My Account">My Account</a>               
-                                <a href="/logout" aria-label="Logout">Logout</a>
+                            <div class="dropdown-content" 
+                                id="my-activity-dropdown"
+                                role="menu"
+                                aria-labelledby="dropdown-my-activity"
+                                hidden>
+                            <a href="/mydonations" role="menuitem" tabindex="-1">My Donations</a>
+                            <a href="/mycart" role="menuitem" tabindex="-1">My Bucket</a>
+                            <a href="/messages" role="menuitem" tabindex="-1">Messages</a>
+                            <a href="/my-account" role="menuitem" tabindex="-1">My Account</a>
+                            <a href="/logout" role="menuitem" tabindex="-1">Logout</a>
                             </div>
                         </div>
                         <a href="/mycart" class="btn" aria-label="View Basket"><i class="fas fa-shopping-basket"></i></a>

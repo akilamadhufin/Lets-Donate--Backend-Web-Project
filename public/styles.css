@@ -486,6 +486,15 @@ background-color: #034303;;
     transition: transform 0.3s;
 }
 
+[role="menu"] {
+  position: absolute;
+  z-index: 1000;
+}
+
+[role="menuitem"]:focus {
+  outline: 2px solid #034303;
+  outline-offset: -2px;
+}
 /* Login Form */
 .login-container {
     background-color: #ffffff;
@@ -1307,4 +1316,19 @@ button, .btn, .view-details-btn, .book-btn-card {
   background-color: #45a049;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
+/* Ensure headings are focusable for screen reader navigation */
+h1, h2, h3 {
+  tabindex: -1;
+}

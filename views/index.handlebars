@@ -1,9 +1,16 @@
-<main>
-    {{{body}}}
-    <h1>Welcome to Our Donation Platform</h1>
-
-    <section id="all-items" class="section" aria-labelledby="section-title">
+<main aria-labelledby="main-heading">
+    {{body}}
+    <h1 id="main-heading" tabindex="-1">Welcome to Our Donation Platform</h1>
+    
+    <section id="all-items" 
+             class="section" 
+             role="region" 
+             aria-labelledby="section-title"
+             aria-describedby="section-description">
         <h2 id="section-title">All Donated Items</h2>
+        <p id="section-description" class="sr-only">
+            Browse through donated items available for pickup
+        </p>
 
         <div class="search-bar">
             <label for="search-input" class="sr-only">Search items</label>
@@ -11,7 +18,7 @@
             <span class="search-icon" aria-hidden="true">&#128269;</span>
         </div>
 
-        <div class="items-grid">
+        <div class="items-grid" role="list" aria-label="List of donated items">
             {{#each allItems}}
             <article class="item-card"
                 data-id="{{this._id}}"
@@ -23,7 +30,9 @@
                 data-image="{{this.image}}"
                 data-user="{{this.userEmail}}"
                 data-available="{{this.available}}"
+                role="listitem"
                 aria-labelledby="item-title-{{@index}}"
+                aria-describedby="item-pickup-{{@index}} item-available-{{@index}}"
                 tabindex="0"
             >
 
@@ -51,7 +60,7 @@
         </div>
 
         <!-- Modal -->
-        <div id="item-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description modal-category modal-address modal-date modal-available">
+        <div id="item-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description modal-category modal-address modal-date modal-available" tabindex="-1">
             <div class="modal-content">
                 <button class="close-btn" aria-label="Close modal">&times;</button>
 
