@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
   });
 
-  // Close dropdown if focus leaves the button and menu (e.g., using Tab)
+  // Close dropdown if focus leaves the button and menu
 document.addEventListener('focusin', (e) => {
   if (
       dropdownMenu.hidden === false &&
