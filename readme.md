@@ -1,7 +1,7 @@
 # Let's Donate
 
 ## Overview
-**Let's Donate** is a web application which is designed to help people to donate their unwanted but usable items, such as electronics, kitchenware, gardening tools, or sports equipment to other people those who need them. Users can register, list donation items by category, track the status of their donations, and update, delete their items. Once an user submit an item, then admins review and approve/reject items to ensure quality.
+**Let's Donate** is a web application which is designed to help people to donate their unwanted but usable items, such as electronics, kitchenware, gardening tools, or sports equipment to other people those who need them. Users can register, list donation items by category, track the status of their donations, and update, delete their items. 
 
 The goal is to make item donation easy, organized, and accessible for everyone. The system also includes email confirmations, search and filter functionality, and an admin panel for management.
 
@@ -28,6 +28,16 @@ The goal is to make item donation easy, organized, and accessible for everyone. 
 
 ## Kanban board-   https://trello.com/b/MkoULxac/lets-donate
 
+## Accessibility Considerations
+
+Accessibility was a core part of our project implementation to ensure inclusiveness for users relying on screen readers and keyboard navigation. Key accessibility features:
+
+- **ARIA attributes**: Used `aria-labelledby`, `aria-hidden`, `aria-controls`, and semantic roles (`role="dialog"`, `role="navigation"`) to enhance screen reader support.
+- **Keyboard navigation**: Elements were made focusable using `tabindex="0"`, and modal/dialog focus management was implemented for smoother keyboard navigation.
+- **Screen reader compatibility**: The application was tested with **NVDA**, and adjustments were made to ensure compatibility.
+- **Evaluation tools**: We used **WAVE**, **Siteimprove**, and **NVDA** to test and improve accessibility.
+- **Form and image accessibility**: All inputs have associated labels, and all images include descriptive `alt` text.
+- **Table accessibility**: Proper use of `<th scope="col">` and `<caption>` for screen reader context.
 ## Getting Started
 
 ### Clone our Repository
