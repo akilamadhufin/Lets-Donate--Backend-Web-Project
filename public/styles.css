@@ -1328,7 +1328,19 @@ button, .btn, .view-details-btn, .book-btn-card {
   border: 0;
 }
 
-/* Ensure headings are focusable for screen reader navigation */
-h1, h2, h3 {
-  tabindex: -1;
+/* Skip Link Styles */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 1rem;
+  padding: 0.5rem 1rem;
+  background: #0056b3;
+  color: white;
+  text-decoration: none;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  left: 1rem;
+  outline: 2px solid #ffd700;
 }
