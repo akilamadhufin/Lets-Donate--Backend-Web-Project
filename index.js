@@ -510,7 +510,7 @@ app.put('/edituser/:id', async (req, res) => {
 
 // about us page route
 app.get('/about-us', (req, res) => {
-    res.render('about-us', { user: req.user });
+    res.render('about-us', { title: 'About Us',user: req.user });
 });
 
 //booking items

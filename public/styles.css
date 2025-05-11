@@ -435,7 +435,7 @@ background-color: #034303;;
 }
 
 .dropdown-content[hidden] {
-  display: none;
+  display: none !important;
 }
 .dropdown-content:not([hidden]) {
   display: block;

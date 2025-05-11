@@ -39,7 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     mapElement.innerHTML = '';
     messageBox.value = '';
-
+    // ESC key handler
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+          closeModal();
+      }
+  });
     // Set modal content
     const dataset = card.dataset;
     modalTitle.textContent = dataset.title;
@@ -124,6 +129,13 @@ searchInput.addEventListener('input', () => {
       card.style.display = matches ? 'block' : 'none';
     });
   });
+
+document.querySelectorAll('.dropdown-content').forEach(menu => {
+  menu.hidden = true;
+});
+document.querySelectorAll('[aria-haspopup="true"]').forEach(btn => {
+  btn.setAttribute('aria-expanded', 'false');
+});
 
   // keybaord nav
   const dropdownBtn = document.getElementById('dropdown-my-activity');
